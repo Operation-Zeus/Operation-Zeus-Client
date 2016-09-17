@@ -1,4 +1,7 @@
-a(ng-href="#/podcast/{{ ::podcast.id }}")
+section(layout="column")
+  a(ng-href="#/podcast/{{ ::podcast.id }}")
   .podcast-panel.hover
-    img(ng-src="{{ ::podcast.imageURL }}" ng-hide="podcasts[{{podcast.id}}].loading" data-position="bottom" data-tooltip="{{ ::podcast.meta.title }}").tooltipped
+    img(ng-src="{{ ::podcast.imageURL }}" ng-hide="podcasts[{{podcast.id}}].loading")
+    md-tooltip(md-direction="bottom")
+      span(ng-bind="podcast.meta.title")
     preloader-small-blue(ng-show="podcasts[{{podcast.id}}].loading")
