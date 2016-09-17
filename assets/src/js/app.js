@@ -1,7 +1,8 @@
 var zeus = angular.module('zeus', [
   'ngRoute',
   'ngAudio',
-  'ngAnimate'
+  'ngAnimate',
+  'ngMaterial'
 ])
 .config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
