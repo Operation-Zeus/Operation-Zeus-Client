@@ -1,14 +1,18 @@
-zeus.controller('HomePageCtrl', ['$scope', '$rootScope', '$timeout', function ($scope, $rootScope, $timeout) {
+zeus.controller('HomePageCtrl', ['$scope', '$rootScope', '$timeout', '$mdDialog', function ($scope, $rootScope, $timeout, $mdDialog) {
   $scope.podcasts = $rootScope.podcasts;
   console.log($scope.podcasts);
-  $('button.modal-trigger').leanModal();
-  $('.tooltipped').tooltip({
-    delay: 50
-  });
 
-  $scope.openPodcastModal = function () {
-    Materialize.updateTextFields();
-    $('.modal#addPodcastModal').openModal();
+  $scope.closePodcastModal = function () {
+    $mdDialog.hide();
+  };
+
+  $scope.openPodcastModal = function (e) {
+    $mdDialog.show({
+      parent: angular.element(document.body),
+      targetEvent: e,
+      clickOutsideToClose: true,
+      contentElement: '#addPodcastModal'
+    });
   };
 
   $scope.addNewPodcast = function (podcastInfo) {
@@ -34,15 +38,11 @@ zeus.controller('HomePageCtrl', ['$scope', '$rootScope', '$timeout', function ($
       $scope.loadingRSSFeed = false;
 
       $timeout(function () {
-        $('.modal#addPodcastModal').closeModal();
+        $mdDialog.hide();
         $scope.loadingPodcasts = false;
 
         $scope.$apply();
-
-        $('.tooltipped').tooltip({
-          delay: 10
-        });
-      }, 2000); // Give image time to download, if caching
+      }, 2000); // Give image time to download
     });
   };
 
@@ -60,10 +60,4 @@ zeus.controller('HomePageCtrl', ['$scope', '$rootScope', '$timeout', function ($
       });
     }
   };
-
-  $timeout(function () {
-    $('.tooltipped').tooltip({
-      delay: 50
-    });
-  }, 500);
 }]);
