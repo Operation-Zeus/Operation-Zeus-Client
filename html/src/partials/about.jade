@@ -1,0 +1,22 @@
+article
+  .row
+    .col.s12
+      h3.center About
+      h4 Version Info
+      p.flow-text Current release: <span ng-bind="version.currentVersion">, released on <span ng-bind="version.versionDate">
+      p.flow-text Current git hash:
+      code(ng-bind="version.hash")
+      
+      h4 Credits
+      p.flow-text Developed by <a href="https://github.com/luop90" target="_blank">Luop90</a>, built on <a href="http://electron.atom.io" target="_blank">Electron</a>. Released under the GPLv3 License.
+
+      h4 Includes
+      ul.has-icons
+        li
+          a(href="http://materializecss.com/" target="_blank") Materialize
+        li
+          a(href="http://electron.atom.io/" target="_blank") Electron
+        li
+          a(href="https://angularjs.org" target="_blank") AngularJS
+      
+      p.flow-text Source Code available on <a href="https://github.com/luop90/Operation-Zeus" target="_blank">Github</a>

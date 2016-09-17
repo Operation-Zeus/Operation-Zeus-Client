@@ -1,0 +1,4 @@
+a(ng-href="#/podcast/{{ ::podcast.id }}")
+  .podcast-panel.hover
+    img(ng-src="{{ ::podcast.imageURL }}" ng-hide="podcasts[{{podcast.id}}].loading" data-position="bottom" data-tooltip="{{ ::podcast.meta.title }}").tooltipped
+    preloader-small-blue(ng-show="podcasts[{{podcast.id}}].loading")

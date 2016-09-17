@@ -1,0 +1,18 @@
+img(ng-src="{{ ::episode.image.url }}" alt="{{ ::podcast.meta.title }}" ng-click="playPodcast(podcast.id, episode.id);").circle
+span(ng-bind="episode.title" ng-click="playPodcast(podcast.id, episode.id);").title
+p(ng-click="playPodcast(podcast.id, episode.id);")
+  span(ng-bind="episode.pubDateParsed")
+  | &nbsp;&bull;&nbsp;
+  span(ng-bind="episode.podcastLengthParsed")
+  
+a(href="javascript:void(0);" ng-click="downloadEpisode(episode.id)" ng-hide="episode.isDownloaded || episode.downloading").download-link
+  i.material-icons file_download
+  
+a(href="javascript:void(0);" ng-click="deleteEpisode(episode.id)" ng-show="episode.isDownloaded").delete-link
+  i.material-icons delete_forever
+  
+a(href="javascript:void(0)" ng-click="markAsWatched(episode.id)" ng-class="{ 'already-watched': episode.watched }").secondary-content
+  i.material-icons markunread
+.progress(ng-show="episode.downloading").slide-top
+  div(ng-style="{ 'width': (episode.downloadPercent * 100) + '%' }").determinate
+  //- .indeterminate

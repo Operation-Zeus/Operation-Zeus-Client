@@ -1,0 +1,8 @@
+node_modules/
+userdata/settings.json
+userdata/podcasts.json
+
+userdata/podcasts/*.mp3
+userdata/cached/*
+
+!.gitkeep

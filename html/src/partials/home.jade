@@ -1,0 +1,37 @@
+section(ng-controller="HomePageCtrl")
+  .row
+    .col.s12
+      podcast-panel(ng-repeat="podcast in podcasts track by $index")
+      p(ng-show="podcasts.length < 1").flow-text You currently have no podcasts! Why don't you add one...?
+  .row
+    .col.s12
+      .fixed-action-btn.horizontal
+        a.btn-floating.btn-large.waves-effect
+          i.material-icons menu
+        ul
+          li
+            button(type="button" ng-click="editPodcasts()" data-position="top" data-tooltip="Edit podcasts").tooltipped.btn-floating.red.waves-effect.waves-light
+              i.material-icons mode_edit
+          li
+            button(type="button" ng-click="refreshAllPodcasts()" data-position="top" data-tooltip="Refresh all").tooltipped.btn-floating.blue.waves-effect.waves-light
+              i.material-icons cached
+          li
+            button(type="button" ng-click="openPodcastModal()" data-position="top" data-tooltip="Add podcast").tooltipped.btn-floating.green.waves-effect.waves-light
+              i.material-icons add
+
+  .modal#addPodcastModal
+    .modal-content
+      form(ng-model="podcastInfo" ng-submit="addNewPodcast(podcastInfo)").col.s12
+        .row
+          .col.s12.input-field
+            input(type="text" ng-required="true" ng-model="podcastInfo.url")#podcastURL
+            label(for="podcastURL") RSS Feed URL
+          .col.s5.offset-s7
+            a(href="javascript:void(0);").modal-action.modal-close.waves-effect.waves-light.btn-flat Cancel
+            button(type="submit").waves-effect.waves-green.btn-flat.good Add
+        .col.s12
+          preloader-small(ng-show="loadingRSSFeed")
+          span(ng-show="podcastInfo.hasError").danger.center
+            span(ng-bind="podcastInfo.errorMessage")
+
+  button(type="button" data-target="addPodcastModal").hide.modal-trigger

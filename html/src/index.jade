@@ -1,0 +1,28 @@
+html(lang="en" ng-app="zeus")
+  head
+    meta(charset="utf-8")
+    title Operation Zeus
+    link(rel="stylesheet" href="../../assets/build/css/master.min.css" media="screen" title="no title" charset="utf-8")
+  body(ng-controller="MainCtrl" ng-class="{ 'dark-theme': $root.settings.darkTheme }")
+    //- include includes/frame
+    main
+      include includes/header
+      div(ng-view ng-class="{ 'slide-left': $root.settings.animations }").container
+    article(ng-hide="$root.fullyLoaded")#splash-screen
+      h1 Loading...
+      h4 "Code names are fun" -CGPGrey
+      include partials/preloader
+    
+    script.
+      if (typeof module === 'object') {window.module = module; module = undefined;}
+    script(src="../../assets/build/js/jquery.min.js", charset="utf-8")
+    script.
+      if (window.module) module = window.module;
+    script(src="../../assets/build/js/materialize.min.js" charset="utf-8")
+    script(src="../../assets/build/js/angular.min.js" charset="utf-8")
+    script(src="../../assets/build/js/angular-route.min.js" charset="utf-8")
+    script(src="../../assets/build/js/angular-audio.min.js" charset="utf-8")
+    script(src="../../assets/build/js/angular-animate.min.js" charset="utf-8")
+    script(src="../../assets/build/js/sweet-alert.min.js" charset="utf-8")
+    script(src="../../assets/build/js/operation-zeus.min.js" charset="utf-8")
+    script(src="../../Zeus.js" charset="utf-8")

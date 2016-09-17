@@ -1,0 +1,43 @@
+section(ng-controller="PlayerPageCtrl")
+  .row
+    .col.s10.offset-s1
+      .card
+        .card-image.waves-effect.waves-light.waves-block
+          img(ng-src="{{ ::episode.image.url }}" alt="{{ episode.title }}").activator
+        .card-content.center
+          span(ng-bind="episode.title").card-title.activator.waves-effect.waves-light.waves-block
+        .card-reveal
+          span(ng-bind="episode.title" style="text-align: center").card-title.waves-effect.waves-light
+          span(data-bind="episode.description" style="max-width: 500px").left
+  .row.no-select
+    .col.s1
+      span(ng-bind="sound.currentTime | trackTime" style="margin-left: -5px;")
+    .col.s10.no-select
+      span(ng-show="playback.showHoverPosition" ng-style="{ 'left': playback.tooltipLeft, 'top': playback.tooltipTop }").playback-tooltip
+        span(ng-bind="playback.hoverTime")
+        .playback-backdrop(ng-show="playback.showHoverPosition")
+      .progress(ng-click="playback.goToPosition($event)" ng-mousemove="playback.showPosition($event)" ng-mouseleave="playback.showHoverPosition = false;" style="height: 7px;").hover
+        .determinate(ng-style="{ 'width': (sound.progress * 100) + '%' }")
+    .col.s1
+      span(ng-bind="sound.remaining | trackTime")
+  .row.center.no-select
+    .col.s2.offset-s1
+      span(ng-click="playback.lastEpisode()" data-position="top" data-tooltip="Back to previous episode").hover.tooltipped
+        i.material-icons skip_previous
+    .col.s2
+      span(ng-click="playback.replay10Seconds()" data-position="top" data-tooltip="Rewind 10 seconds").hover.tooltipped
+        i.material-icons replay_10
+    .col.s2
+      span(ng-click="playback.playPodcast()" ng-hide="playback.currentlyPlaying").hover
+        i.material-icons play_arrow
+      span(ng-click="playback.pausePodcast()" ng-show="playback.currentlyPlaying").hover
+        i.material-icons pause
+    .col.s2
+      span(ng-click="playback.forward30Seconds()" data-position="top" data-tooltip="Skip 30 seconds").hover.tooltipped
+        i.material-icons forward_30
+    .col.s2
+      span(ng-click="playback.nextEpisode()" data-position="top" data-tooltip="Skip to next episode").hover.tooltipped
+        i.material-icons skip_next
+  .row.hide
+    audio#audioSource
+      source(ng-src="{{ ::episode.playbackURL }}")

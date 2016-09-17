@@ -1,0 +1,47 @@
+.card-reveal span[data-bind="episode.description"] {
+  h2 {
+    font-size: 2.28rem;
+  }
+}
+
+.hover {
+  cursor: pointer;
+}
+
+.playback-tooltip {
+  margin-top: -10px;
+  padding: 10px 8px;
+  font-size: 1rem;
+  z-index: 2000;
+  background-color: transparent;
+  border-radius: 2px;
+  color: #fff;
+  min-height: 36px;
+  line-height: 120%;
+  // opacity: 0;
+  // display: none;
+  position: absolute;
+  text-align: center;
+  max-width: calc(100% - 4px);
+  overflow: hidden;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.playback-backdrop {
+  opacity: 1;
+  display: block;
+  border-radius: 10%;
+  position: absolute;
+  margin-top: -20px;
+  margin-left: -10px;
+  background-color: #323232;
+  z-index: -1;
+  height: 20px;
+  width: 75px;
+}
+
+.card-image.waves-effect.waves-light.waves-block > img {
+  min-height: 200px;
+}
