@@ -1,15 +1,12 @@
-.navbar-fixed
-  nav
-    .nav-wrapper
-      a(href="#/").brand-logo.center Operation Zeus
-      ul.left
-        li.waves-effect.waves-light
-          a(href="#/")
-            i.material-icons settings_input_antenna
-      ul.right
-        li.waves-effect.waves-light
-          a(href="#/about")
-            i.material-icons info_outline
-        li.waves-effect.waves-light
-          a(href="#/settings")
-            i.material-icons settings
+header
+  md-toolbar#header-toolbar
+    .md-toolbar-tools
+      md-button(aria-label="Podcasts" ng-href="#/").md-icon-button
+        md-icon(md-font-library="material-icons") settings_input_antenna
+      span(flex)
+      md-button(aria-label="Operation Zeus" ng-href="#/") Operation Zeus
+      span(flex)
+      md-button(aria-label="About" ng-href="#/about").md-icon-button
+        md-icon(md-font-library="material-icons") info_outline
+      md-button(aria-label="Settings" ng-href="#/settings").md-icon-button
+        md-icon(md-font-library="material-icons") settings
