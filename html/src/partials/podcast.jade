@@ -1,27 +1,27 @@
-section(ng-controller="PodcastPageCtrl" ng-init="showUnplayedOnly = true;")
-  .row
-    .col.s12
-      .card.horizontal
-        .card-image
-          img(ng-src="{{ ::podcast.imageURL }}")
-        .card-stacked
-          .card-content
-            h3(ng-bind="podcast.meta.title")
-            h5(ng-bind="podcast.meta.author")
-            p(ng-bind="podcast.meta.description")
-          .card-action
-            a(ng-href="{{ ::podcast.meta.link }}" target="_blank") Visit Website
-    .col.s12
-      ul.tabs
-        li.tab.col.s6.waves-effect.waves-blue
-          a(href="#Unplayed" ng-click="showUnplayedOnly = true;").active Unplayed
-        li.tab.col.s6.waves-effect.waves-blue
-          a(href="#Feed" ng-click="showUnplayedOnly = false;") Feed
-    .col.s12#Unplayed
-      ul.collection
-        li(ng-repeat="episode in podcast.podcasts" ng-class="{ 'mouse-hover waves-effect waves-light block': episode.isDownloaded }" ng-hide="showUnplayedOnly && episode.watched").collection-item.avatar.animate-toggle
-          podcast-episode
-    .col.s12#Feed
-      ul.collection
-        li(ng-repeat="episode in podcast.podcasts" ng-class="{ 'mouse-hover waves-effect waves-light block': episode.isDownloaded }").collection-item.avatar
-          podcast-episode
+section(ng-controller="PodcastPageCtrl" ng-init="showUnplayedOnly = true;" layout="column" flex="90" flex-offset="5")
+  md-content(style="margin-bottom: 10px; overflow: visible;").md-padding
+    div(flex-xs layout="column")
+      md-card
+        md-card-title
+          md-card-title-text
+            h3.md-headline
+              span(ng-bind="podcast.meta.title")
+            h5.md-subhead
+              span(ng-bind="podcast.meta.author")
+            p.body-text-1
+              span(ng-bind="podcast.meta.description")
+          md-card-title-media
+            .md-media-lg.card-media
+              img(ng-src="{{ ::podcast.imageURL }}")
+  md-content.md-padding
+    md-tabs(md-dynamic-height md-border-bottom style="background-color: rgba(0, 0, 0, 0.1);")
+      md-tab(label="Unplayed")
+        md-content.md-padding
+          md-list#podcast-panel
+            md-list-item(ng-repeat="episode in podcast.podcasts" ng-class="{ 'mouse-hover': episode.isDownloaded }" ng-hide="showUnplayedOnly && episode.watched").animate-toggle.md-3-line
+              podcast-episode
+      md-tab(label="Feed")
+        md-content.md-padding
+          md-list#podcast-panel
+            md-list-item(ng-repeat="episode in podcast.podcasts" ng-class="{ 'mouse-hover': episode.isDownloaded }").animate-toggle.md-3-line
+              podcast-episode

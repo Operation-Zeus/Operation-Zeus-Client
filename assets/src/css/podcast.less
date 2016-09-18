@@ -1,21 +1,51 @@
-.card.horizontal .card-image img {
-  max-width: 200px;
-}
+md-list#podcast-panel md-list-item {
+  border-bottom: 2px solid rgb(63, 81, 181);
+  min-height: 80px;
 
-ul.collection li.collection-item a.download-link {
-  color: #27ae60;
-  position: absolute;
-  right: 16px;
-}
+  podcast-episode {
+    padding-top: 5px;
+    width: 100%;
 
-ul.collection li.collection-item a.delete-link {
-  color: #c62828;
-  position: absolute;
-  right: 16px;
-}
+    a.download-link {
+      md-icon {
+        color: #27ae60;
+      }
 
-ul.collection li.collection-item a.secondary-content.already-watched {
-  color: #9e9e9e;
+      position: absolute;
+      right: 16px;
+    }
+
+    a.delete-link {
+      md-icon {
+        color: #c62828;
+      }
+
+      position: absolute;
+      right: 16px;
+    }
+
+    a.secondary-content {
+      md-icon {
+        color: #26a69a;
+      }
+
+      position: absolute;
+      top: 42px;
+      right: 16px;
+    }
+
+    .already-watched {
+      md-icon {
+        color: #9e9e9e !important;
+      }
+    }
+
+    md-progress-linear {
+      position: absolute;
+      top: 5em;
+      left: -1;
+    }
+  }
 }
 
 .mouse-hover {

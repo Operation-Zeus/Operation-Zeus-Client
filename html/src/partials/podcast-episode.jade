@@ -1,18 +1,22 @@
-img(ng-src="{{ ::episode.image.url }}" alt="{{ ::podcast.meta.title }}" ng-click="playPodcast(podcast.id, episode.id);").circle
-span(ng-bind="episode.title" ng-click="playPodcast(podcast.id, episode.id);").title
-p(ng-click="playPodcast(podcast.id, episode.id);")
-  span(ng-bind="episode.pubDateParsed")
-  | &nbsp;&bull;&nbsp;
-  span(ng-bind="episode.podcastLengthParsed")
-  
-a(href="javascript:void(0);" ng-click="downloadEpisode(episode.id)" ng-hide="episode.isDownloaded || episode.downloading").download-link
-  i.material-icons file_download
-  
-a(href="javascript:void(0);" ng-click="deleteEpisode(episode.id)" ng-show="episode.isDownloaded").delete-link
-  i.material-icons delete_forever
-  
-a(href="javascript:void(0)" ng-click="markAsWatched(episode.id)" ng-class="{ 'already-watched': episode.watched }").secondary-content
-  i.material-icons markunread
-.progress(ng-show="episode.downloading").slide-top
-  div(ng-style="{ 'width': (episode.downloadPercent * 100) + '%' }").determinate
-  //- .indeterminate
+section(layout="row" layout-align="space-between" flex="100")
+  img(ng-src="{{ ::episode.image.url }}" alt="{{ ::podcast.meta.title }}" ng-click="playPodcast(podcast.id, episode.id);").md-avatar
+  div(layout="column").md-list-item-text
+    h3(ng-bind="episode.title" ng-click="playPodcast(podcast.id, episode.id);")
+    p(ng-click="playPodcast(podcast.id, episode.id);")
+      span(ng-bind="episode.pubDateParsed")
+      | &nbsp;&bull;&nbsp;
+      span(ng-bind="episode.podcastLengthParsed")
+      
+    a(href="javascript:void(0);" ng-click="downloadEpisode(episode.id)" ng-hide="episode.isDownloaded || episode.downloading" align="right").download-link
+      md-icon(md-font-library="material-icons") file_download
+      md-tooltip Download
+      
+    a(href="javascript:void(0);" ng-click="deleteEpisode(episode.id)" ng-show="episode.isDownloaded" align="right").delete-link
+      md-icon(md-font-library="material-icons") delete_forever
+      md-tooltip Delete
+
+    a(href="javascript:void(0)" ng-click="markAsWatched(episode.id)" ng-class="{ 'already-watched': episode.watched }" align="right").secondary-content
+      md-icon(md-font-library="material-icons") markunread
+      md-tooltip Mark Read
+
+    md-progress-linear(md-mode="determinate" ng-show="episode.downloading" value="{{ (episode.downloadPercent * 100) }}").slide-top
