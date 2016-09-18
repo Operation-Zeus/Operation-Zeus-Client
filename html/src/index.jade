@@ -12,7 +12,7 @@ html(lang="en" ng-app="zeus")
     article(ng-hide="$root.fullyLoaded")#splash-screen
       h1 Loading...
       h4 "Code names are fun" -CGPGrey
-      include partials/preloader
+      img(src="../../assets/build/img/preloader-multicolor.gif" alt="Loading...")
     
     script.
       if (typeof module === 'object') {window.module = module; module = undefined;}
