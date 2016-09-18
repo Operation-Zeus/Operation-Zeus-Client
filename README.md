@@ -1,6 +1,6 @@
 # Operation Zeus
 ## A work-in-progress [Electron](http://electron.atom.io) app
-A podcast manager built on Electron
+A podcast manager built on Electron, part of the upcoming Operation Zeus project.
 
 ## Usage
 1. Clone the repo
