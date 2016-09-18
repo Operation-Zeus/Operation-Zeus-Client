@@ -5,8 +5,8 @@ var api = {};
 
 /**
  * Logs with a timestamp
- * @param tag {STRING}
- * @param message {STRING}
+ * @param {STRING} tag
+ * @param {STRING} message
  */
 api.log = function(tag, message) {
   var timestamp = moment.utc().format('YYYY-MM-DD hh:mm:ss');
@@ -28,12 +28,20 @@ api.log = function(tag, message) {
   console.log(`${timestamp} ${tag} ${message}`);
 };
 
+/**
+ * Formats an input in seconds -> x hr y min
+ * @param {INT} seconds
+ */
 api.formatSecondsToWords = function (seconds) {
   var d = moment.duration(parseInt(seconds), 'seconds');
   var response = `${d.hours()} hr ${d.minutes()} min`;
   return response;
 };
 
+/**
+ * Formats input in seconds -> hours:min:seconds
+ * @param {INT} seconds
+ */
 api.formatSecondsToHoursMinutesSeconds = function (seconds) {
   var d = moment.duration(parseInt(seconds), 'seconds');
   var response = `${d.hours()}:${d.minutes()}:${d.seconds()}`;
@@ -43,7 +51,7 @@ api.formatSecondsToHoursMinutesSeconds = function (seconds) {
 
 /**
  * Creates an MD5 hash for a given input
- * @param input {STRING}
+ * @param {STRING} input
  */
 api.md5 = function (input) {
   var hash = crypto.createHash('md5').update(input).digest('hex');
