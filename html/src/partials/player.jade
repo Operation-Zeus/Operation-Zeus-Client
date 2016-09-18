@@ -1,43 +1,52 @@
-section(ng-controller="PlayerPageCtrl")
-  .row
-    .col.s10.offset-s1
-      .card
-        .card-image.waves-effect.waves-light.waves-block
-          img(ng-src="{{ ::episode.image.url }}" alt="{{ episode.title }}").activator
-        .card-content.center
-          span(ng-bind="episode.title").card-title.activator.waves-effect.waves-light.waves-block
-        .card-reveal
-          span(ng-bind="episode.title" style="text-align: center").card-title.waves-effect.waves-light
-          span(data-bind="episode.description" style="max-width: 500px").left
-  .row.no-select
-    .col.s1
-      span(ng-bind="sound.currentTime | trackTime" style="margin-left: -5px;")
-    .col.s10.no-select
+section(layout="column" flex="90" flex-offset="5" ng-controller="PlayerPageCtrl")
+  section(layout="row" layout-align="center")
+    md-card
+      md-card-title(style="max-height: 60px;")
+        md-card-title-text
+          span(ng-bind="podcast.meta.title").md-headline
+          span(ng-bind="episode.title").md-subhead
+        md-card-title-media
+          .md-media-lg.card-media
+            img(ng-src="{{ ::episode.image.url }}" alt="{{ episode.title }}" style="max-width: 152px;")
+      md-card-content(style="overflow: auto; max-width: 500px; max-height: 330px;")
+        span(data-bind="episode.description").md-body-1
+
+  section(layout="row" layout-align="center center").no-select
+    section(flex="10" flex-offset="5")
+      span(ng-bind="sound.currentTime | trackTime")
+    section(flex="90").no-select
       span(ng-show="playback.showHoverPosition" ng-style="{ 'left': playback.tooltipLeft, 'top': playback.tooltipTop }").playback-tooltip
         span(ng-bind="playback.hoverTime")
         .playback-backdrop(ng-show="playback.showHoverPosition")
-      .progress(ng-click="playback.goToPosition($event)" ng-mousemove="playback.showPosition($event)" ng-mouseleave="playback.showHoverPosition = false;" style="height: 7px;").hover
-        .determinate(ng-style="{ 'width': (sound.progress * 100) + '%' }")
-    .col.s1
+      md-progress-linear(md-mode="determinate" value="{{ (sound.progress * 100) }}" ng-click="playback.goToPosition($event)" ng-mousemove="playback.showPosition($event)" ng-mouseleave="playback.showHoverPosition = false;" style="height: 8px;").hover.no-select
+    section(flex="10" flex-offset="5")
       span(ng-bind="sound.remaining | trackTime")
-  .row.center.no-select
-    .col.s2.offset-s1
-      span(ng-click="playback.lastEpisode()" data-position="top" data-tooltip="Back to previous episode").hover.tooltipped
-        i.material-icons skip_previous
-    .col.s2
-      span(ng-click="playback.replay10Seconds()" data-position="top" data-tooltip="Rewind 10 seconds").hover.tooltipped
-        i.material-icons replay_10
-    .col.s2
+
+  section(layout="row" layout-align="center").no-select
+    section(flex="20" flex-offset="15")
+      span(ng-click="playback.lastEpisode()").hover
+        md-icon(md-icon-library="material-icons") skip_previous
+        md-tooltip(md-direction="bottom") Back to previous episode
+    section(flex="20")
+      span(ng-click="playback.replay10Seconds()").hover
+        md-icon(md-icon-library="material-icons") replay_10
+        md-tooltip(md-direction="bottom") Rewind 10 seconds
+    section(flex="20")
       span(ng-click="playback.playPodcast()" ng-hide="playback.currentlyPlaying").hover
-        i.material-icons play_arrow
+        md-icon(md-icon-library="material-icons") play_arrow
+        md-tooltip(md-direction="bottom") Play
       span(ng-click="playback.pausePodcast()" ng-show="playback.currentlyPlaying").hover
-        i.material-icons pause
-    .col.s2
-      span(ng-click="playback.forward30Seconds()" data-position="top" data-tooltip="Skip 30 seconds").hover.tooltipped
-        i.material-icons forward_30
-    .col.s2
-      span(ng-click="playback.nextEpisode()" data-position="top" data-tooltip="Skip to next episode").hover.tooltipped
-        i.material-icons skip_next
-  .row.hide
+        md-icon(md-icon-library="material-icons") pause
+        md-tooltip(md-direction="bottom") Pause
+    section(flex="20")
+      span(ng-click="playback.forward30Seconds()").hover
+        md-icon(md-icon-library="material-icons") forward_30
+        md-tooltip(md-direction="bottom") Skip 30 seconds
+    section(flex="20")
+      span(ng-click="playback.nextEpisode()").hover
+        md-icon(md-icon-library="material-icons") skip_next
+        md-tooltip(md-direction="bottom") Skip to next episode
+
+  section(layout="row" ng-hide)
     audio#audioSource
       source(ng-src="{{ ::episode.playbackURL }}")

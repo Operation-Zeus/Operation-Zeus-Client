@@ -48,21 +48,21 @@ zeus.controller('PlayerPageCtrl', ['$scope', '$rootScope', '$route', '$location'
       $scope.sound.pause();
     },
     goToPosition: function (e) {
-      var totalWidth = document.getElementsByClassName('progress')[0].clientWidth;
+      var totalWidth = document.getElementsByTagName('md-progress-linear')[0].clientWidth;
       var clickedAt = e.offsetX;
 
       var percent = (clickedAt / totalWidth).round(4);
       $scope.sound.currentTime = Math.round(($scope.sound.remaining + $scope.sound.currentTime) * percent);
     },
     showPosition: function (e) {
-      var totalWidth = document.getElementsByClassName('progress')[0].clientWidth;
+      var totalWidth = document.getElementsByTagName('md-progress-linear')[0].clientWidth;
       var clickedAt = e.offsetX;
 
       var percent = (clickedAt / totalWidth).round(4);
       $scope.playback.hoverTime = parseTime(Math.floor(($scope.sound.remaining + $scope.sound.currentTime) * percent));
 
       $scope.playback.tooltipLeft = e.pageX - 20;
-      $scope.playback.tooltipTop = $('.progress').position().top - 10;
+      $scope.playback.tooltipTop = angular.element(document.querySelector('md-progress-linear')).position().top - 15;
       $scope.playback.showHoverPosition = true;
     }
   };
@@ -71,10 +71,7 @@ zeus.controller('PlayerPageCtrl', ['$scope', '$rootScope', '$route', '$location'
     $scope.sound.currentTime = $scope.episode.currentTime || 0;  // Load saved time
   }, 400);
 
-  $('[data-bind="episode.description"]').html($scope.episode.description);
-  $('.tooltipped').tooltip({
-    delay: 10
-  });
+  angular.element(document.querySelector('[data-bind="episode.description"]')).html($scope.episode.description);
 
   $scope.$on('destroy', function () {
     // Destroy the interval when the $scope is destroyed (such as on a new page).
