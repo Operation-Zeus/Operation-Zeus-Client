@@ -31,7 +31,7 @@ const template = [
 
 const menu = Menu.buildFromTemplate(template);
 
-$(document).on('contextmenu', function (e) {
-  e.preventDefault();
-  menu.popup(remote.getCurrentWindow());
-});
+// $(document).on('contextmenu', function (e) {
+//   e.preventDefault();
+//   menu.popup(remote.getCurrentWindow());
+// });

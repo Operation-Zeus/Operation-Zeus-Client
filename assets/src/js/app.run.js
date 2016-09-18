@@ -52,7 +52,7 @@ function runBlock($window, $rootScope, $location, $interval) {
   // }, 1000 * 60 * 15); // Update every 15 minutes
 }
 
-$(document).on('click', 'a[href^="http"]', function (e) {
-  e.preventDefault();
-  shell.openExternal(this.href);
-});
+// angular.element(document.querySelector('body')).on('click', 'a[href^="http"]', function (e) {
+//   e.preventDefault();
+//   shell.openExternal(this.href);
+// });
