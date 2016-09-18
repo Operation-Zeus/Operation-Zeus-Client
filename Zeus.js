@@ -275,9 +275,9 @@ Zeus.downloadEpisode = function (podcast, callback) {
     // Track the size of the file, to upload our download bar.
     var fileWatcher = fs.watchFile(`userdata/podcasts/${podcast.hash}.mp3`, {  persistent: true, interval: 500 }, (curr, prev) => {
       if (curr != prev) {
-        console.log(`The size isn't the same yet! ${curr.size} ${prev.size}`);
-        callback(null, true, curr.size / sizeOfFile);
         notSame = true;
+
+        callback(null, true, curr.size / sizeOfFile);
         return;
       }
     });
