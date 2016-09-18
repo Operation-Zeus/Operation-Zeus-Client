@@ -4,10 +4,11 @@ html(lang="en" ng-app="zeus")
     title Operation Zeus
     link(rel="stylesheet" href="../../assets/build/css/master.min.css" media="screen" title="no title" charset="utf-8")
   body(ng-controller="MainCtrl" ng-class="{ 'dark-theme': $root.settings.darkTheme }")
-    //- include includes/frame
     include includes/header
-    main(flex)
-      md-content(ng-if="$root.fullyLoaded" ng-class="{ 'slide-left': $root.settings.animations }" flex ng-view)
+
+    md-content
+      main(flex)
+        md-content(ng-if="$root.fullyLoaded" ng-class="{ 'slide-left': $root.settings.animations }" flex ng-view)
     article(ng-hide="$root.fullyLoaded")#splash-screen
       h1 Loading...
       h4 "Code names are fun" -CGPGrey
