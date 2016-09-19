@@ -1,83 +1,45 @@
-section(ng-controller="SettingPageCtrl")
-  .row
-    .col.s12
-      h3.center Settings
-      table
-        thead
-          tr
-            th Name
-            th Value
-        tbody
-          tr
-            td Dark Theme
-            td
-              .switch
-                label
-                  | Off
-                  input(type="checkbox" ng-model="settings.darkTheme" checked)
-                  span.lever
-                  | On
-          tr
-            td Animations
-            td
-              .switch
-                label
-                  | Off
-                  input(type="checkbox" ng-model="settings.animations" checked)
-                  span.lever
-                  | On
-          tr
-            td Analytics
-            td
-              .switch
-                label
-                  | Off
-                  input(type="checkbox" ng-model="settings.analytics" checked)
-                  span.lever
-                  | On
-          tr
-            td Auto-Play
-            td
-              .switch
-                label
-                  | Off
-                  input(type="checkbox" ng-model="settings.autoplay" checked)
-                  span.lever
-                  | On
-          tr
-            td Cache Podcast Images
-            td
-              .switch
-                label
-                  | Off
-                  input(type="checkbox" ng-model="settings.cacheImages" checked)
-                  span.lever
-                  | On
-          tr
-            td Auto-Update Podcasts
-            td
-              .switch
-                label 
-                  | Off
-                  input(type="checkbox" ng-model="settings.autoUpdate" checked)
-                  span.lever
-                  | On
-          tr
-            td Volume
-            td
-              p.range-field
-                input(type="range" min="0" max="100" ng-model="settings.volumeRange")
-          //- tr
-          //-   td Playback
-          //-   td
-          //-     p
-          //-       input(name="playbackType" type="radio" checked).with-gap#stream
-          //-       label(for="stream") Stream Only
-          //-     p
-          //-       input(name="playbackType" type="radio").with-gap#download
-          //-       label(for="download") Download Only
-          //-     p
-          //-       input(name="playbackType" type="radio").with-gap#both
-          //-       label(for="both") Stream while Downloading
-                
-      button(ng-click="saveSettings();").btn-flat.good.right.waves-effect.waves-green Save  
+section(ng-controller="SettingPageCtrl" layout="column" flex-offset="5")
+  h3(align="center").md-display-2 Settings
+  table(style="width: 90%; margin-bottom: 1em;")
+    thead
+      tr
+        th Name
+        th Value
+    tbody
+      tr
+        td Theme
+        td
+          md-radio-group(ng-model="settings.theme")
+            md-radio-button(value="light").md-primary Light
+            md-radio-button(value="dark").md-primary Dark
+            md-radio-button(value="twilight").md-primary Twilight
+      tr
+        td Animations
+        td
+          md-checkbox(ng-model="settings.animations" aria-label="Animations").md-primary
+      tr
+        td Analytics
+        td
+          md-checkbox(ng-model="settings.analytics" aria-label="Analytics").md-primary
+      tr
+        td Auto-Play
+        td
+          md-checkbox(ng-model="settings.autoplay" aria-label="Auto-Play").md-primary
+      tr
+        td Cache Podcast Images
+        td
+          md-checkbox(ng-model="settings.cacheImages" aria-label="Cache Images").md-primary
+      tr
+        td Auto-Update Podcasts
+        td
+          md-checkbox(ng-model="settings.autoUpdate" aria-label="Auto-Update").md-primary
+      tr
+        td Playback
+        td
+          md-radio-group(ng-model="settings.playback")
+            md-radio-button(value="stream").md-primary Stream
+            md-radio-button(value="download").md-primary Download
+      tr
+        td Volume
+        td
+          md-slider(flex md-discrete ng-model="settings.volume" min="0" max="100" step="1" aria-label="Volume").md-primary

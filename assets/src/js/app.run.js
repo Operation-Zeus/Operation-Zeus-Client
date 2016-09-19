@@ -11,13 +11,14 @@ function runBlock($window, $rootScope, $location, $interval) {
   Zeus.loadSettings(function (data) {
     if (data.darkTheme === undefined) {
       $rootScope.settings = {
-        darkTheme: true,
+        theme: 'light',
         animations:  true,
         analytics:  true,
-        autoplay:  false,
+        autoplay:  true,
         volume: 50,
         cacheImages: true,
-        autoUpdate: true
+        autoUpdate: true,
+        playback: 'download'
       };
     } else {
       $rootScope.settings = data;
@@ -51,8 +52,3 @@ function runBlock($window, $rootScope, $location, $interval) {
   //   }
   // }, 1000 * 60 * 15); // Update every 15 minutes
 }
-
-// angular.element(document.querySelector('body')).on('click', 'a[href^="http"]', function (e) {
-//   e.preventDefault();
-//   shell.openExternal(this.href);
-// });
