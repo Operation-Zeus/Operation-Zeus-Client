@@ -14,32 +14,39 @@ section(ng-controller="SettingPageCtrl" layout="column" flex-offset="5")
             md-radio-button(value="dark").md-primary Dark
             md-radio-button(value="twilight").md-primary Twilight
       tr
-        td Animations
-        td
-          md-checkbox(ng-model="settings.animations" aria-label="Animations").md-primary
-      tr
         td Analytics
         td
           md-checkbox(ng-model="settings.analytics" aria-label="Analytics").md-primary
       tr
+        td Volume
+        td
+          md-slider(flex md-discrete ng-model="settings.volume" min="0" max="100" step="1" aria-label="Volume").md-primary
+          
+      tr(ng-hide="showAdvancedSettings")
+        td
+          md-button(ng-hide="showAdvancedSettings" ng-click="showAdvancedSettings = true" align="center").md-primary Show advanced...
+      tr(ng-show="showAdvancedSettings")
+        td Animations
+        td
+          md-checkbox(ng-model="settings.animations" aria-label="Animations").md-primary
+      tr(ng-show="showAdvancedSettings")
         td Auto-Play
         td
           md-checkbox(ng-model="settings.autoplay" aria-label="Auto-Play").md-primary
-      tr
+      tr(ng-show="showAdvancedSettings")
         td Cache Podcast Images
         td
           md-checkbox(ng-model="settings.cacheImages" aria-label="Cache Images").md-primary
-      tr
+      tr(ng-show="showAdvancedSettings")
         td Auto-Update Podcasts
         td
           md-checkbox(ng-model="settings.autoUpdate" aria-label="Auto-Update").md-primary
-      tr
+      tr(ng-show="showAdvancedSettings")
         td Playback
         td
           md-radio-group(ng-model="settings.playback")
             md-radio-button(value="stream").md-primary Stream
             md-radio-button(value="download").md-primary Download
-      tr
-        td Volume
-        td
-          md-slider(flex md-discrete ng-model="settings.volume" min="0" max="100" step="1" aria-label="Volume").md-primary
+  section(align="right")
+    md-button(ng-click="revertSettings()" style="text-transform: none;").md-warn.md-raised Reset to Default
+    md-button(ng-click="saveSettings()" style="text-transform: none;").md-primary.md-raised Save
