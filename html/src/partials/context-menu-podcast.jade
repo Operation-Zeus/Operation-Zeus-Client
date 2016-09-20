@@ -1,0 +1,14 @@
+ul.menu#context-menu
+  md-menu-content
+    md-menu-item
+      md-button(ng-click="openPodcastModal($event)")
+        md-icon(md-icon-library="material-icons").md-primary add
+        span Add Podcast
+    md-menu-item
+      md-button(ng-click="") 
+        md-icon(md-icon-library="material-icons").md-primary cached
+        span Refresh Podcasts
+    md-menu-item
+      md-button(ng-click="")
+        md-icon(md-icon-library="material-icons").md-primary mode_edit
+        span Edit Podcasts
