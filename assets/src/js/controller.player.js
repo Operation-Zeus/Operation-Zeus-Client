@@ -61,8 +61,8 @@ zeus.controller('PlayerPageCtrl', ['$scope', '$rootScope', '$route', '$location'
       var percent = (clickedAt / totalWidth).round(4);
       $scope.playback.hoverTime = parseTime(Math.floor(($scope.sound.remaining + $scope.sound.currentTime) * percent));
 
-      $scope.playback.tooltipLeft = e.pageX - 20;
-      $scope.playback.tooltipTop = angular.element(document.querySelector('md-progress-linear')).position().top - 15;
+      $scope.playback.tooltipLeft = e.pageX - 28;
+      $scope.playback.tooltipTop = angular.element(document.querySelector('md-progress-linear')).prop('offsetTop') - 23;
       $scope.playback.showHoverPosition = true;
     }
   };
