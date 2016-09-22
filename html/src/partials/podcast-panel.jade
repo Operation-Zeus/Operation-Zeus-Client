@@ -1,5 +1,5 @@
 section(layout="column")
-  a(ng-href="#/podcast/{{ ::podcast.id }}")
+  a(ui-sref="podcast({ id: podcast.id })")
     .podcast-panel.hover
       img(ng-src="{{ ::podcast.imageURL }}" ng-hide="podcasts[{{podcast.id}}].loading")
       md-tooltip(md-direction="bottom")

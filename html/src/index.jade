@@ -8,7 +8,8 @@ html(lang="en" ng-app="zeus")
 
     md-content
       main(flex)
-        md-content(ng-if="$root.fullyLoaded" ng-class="{ 'slide-left': $root.settings.animations }" flex ng-view)
+        md-content(ng-if="$root.fullyLoaded" ng-class="{ 'slide-left': $root.settings.animations }" flex)
+          ui-view
     article(ng-hide="$root.fullyLoaded")#splash-screen
       h1 Loading...
       h4 "Code names are fun" -CGPGrey
@@ -19,7 +20,7 @@ html(lang="en" ng-app="zeus")
     script.
       if (window.module) module = window.module;
     script(src="../../assets/build/js/angular.min.js" charset="utf-8")
-    script(src="../../assets/build/js/angular-route.min.js" charset="utf-8")
+    script(src="../../assets/build/js/angular-ui-router.min.js" charset="utf-8")
     script(src="../../assets/build/js/angular-audio.min.js" charset="utf-8")
     script(src="../../assets/build/js/angular-animate.min.js" charset="utf-8")
     script(src="../../assets/build/js/angular-messages.min.js" charset="utf-8")

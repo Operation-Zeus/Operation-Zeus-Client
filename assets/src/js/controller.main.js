@@ -1,4 +1,4 @@
-zeus.controller('MainCtrl', ['$scope', '$rootScope', '$route', '$window', '$location', '$document', function ($scope, $rootScope, $route, $window, $location, $document) {
+zeus.controller('MainCtrl', ['$scope', '$rootScope'/*, '$route'*/, '$window', '$location', '$document', function ($scope, $rootScope/*, $route*/, $window, $location, $document) {
   $rootScope.$on('$routeChangeError', function (event, curr, prev, rejection) {
     if (!prev) {
       $location.url('/');

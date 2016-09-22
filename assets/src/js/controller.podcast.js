@@ -1,5 +1,10 @@
-zeus.controller('PodcastPageCtrl', ['$scope', '$rootScope', '$route', '$location', '$timeout', function ($scope, $rootScope, $route, $location, $timeout) {
-  $scope.podcast = $rootScope.podcasts[$route.current.params.id];
+angular
+  .module('zeus')
+  .controller('PodcastPageCtrl', PodcastPageCtrl);
+
+function PodcastPageCtrl($scope, $rootScope, $state, $location, $timeout) {
+  $scope.podcast = $rootScope.podcasts[$state.params.id];
+
   $scope.showUnplayedOnly = true;
   if (!$scope.podcast) {
     $location.url('/');
@@ -50,4 +55,6 @@ zeus.controller('PodcastPageCtrl', ['$scope', '$rootScope', '$route', '$location
     $scope.podcast.podcasts[id].watched = true;
     Zeus.updateSavedPodcast($scope.podcast);
   };
-}]);
+};
+
+PodcastPageCtrl.$inject = ['$scope', '$rootScope', '$state', '$location', '$timeout'];

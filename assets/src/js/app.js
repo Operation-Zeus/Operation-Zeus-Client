@@ -1,34 +1,47 @@
 var zeus = angular.module('zeus', [
-  'ngRoute',
+  'ui.router',
   'ngAudio',
   'ngAnimate',
   'ngMaterial',
   'ngContextMenu'
-])
-.config(['$routeProvider', '$locationProvider',
-  function ($routeProvider, $locationProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'partials/home.html'
-      })
-      .when('/podcast/:id', {
-        templateUrl: 'partials/podcast.html'
-      })
-      .when('/settings', {
-        templateUrl: 'partials/settings.html'
-      })
-      .when('/about', {
-        templateUrl: 'partials/about.html'
-      })
-      .when('/podcast/:id', {
-        templateUrl: 'partials/podcast.html'
-      })
-      .when('/play/:podcast/:episode', {
-        templateUrl: 'partials/player.html'
-      });
+]).config(['$stateProvider', function($stateProvider) {
+  var homeState = {
+    name: 'home',
+    url: '/',
+    templateUrl: 'partials/home.html'
+  };
 
-    $locationProvider.html5Mode(false);
-  }]);
+  var podcastState = {
+    name: 'podcast',
+    url: '/podcast/{id}',
+    templateUrl: 'partials/podcast.html'
+  };
+
+  var settingState = {
+    name: 'settings',
+    url: '/settings',
+    templateUrl: 'partials/settings.html'
+  };
+
+  var aboutState = {
+    name: 'about',
+    url: '/about',
+    templateUrl: 'partials/about.html'
+  };
+
+  var playPodcastState = {
+    name: 'playPodcast',
+    url: '/play/{podcast}/{episode}',
+    templateUrl: 'partials/player.html'
+  };
+
+  $stateProvider.state(homeState);
+  $stateProvider.state(podcastState);
+  $stateProvider.state(settingState);
+  $stateProvider.state(aboutState);
+  $stateProvider.state(playPodcastState);
+  // $stateProvider.state(podcastState);
+}]);
 
 angular
   .module('zeus')

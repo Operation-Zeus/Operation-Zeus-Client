@@ -1,6 +1,10 @@
-zeus.controller('PlayerPageCtrl', ['$scope', '$rootScope', '$route', '$location', '$interval', '$timeout', 'ngAudio', function ($scope, $rootScope, $route, $location, $interval, $timeout, ngAudio) {
-  $scope.podcast = $rootScope.podcasts[$route.current.params.podcast];
-  $scope.episode = $rootScope.podcasts[$route.current.params.podcast].podcasts[$route.current.params.episode];
+angular
+  .module('zeus')
+  .controller('PlayerPageCtrl', PlayerPageCtrl);
+
+function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeout, ngAudio) {
+  $scope.podcast = $rootScope.podcasts[$state.params.podcast];
+  $scope.episode = $rootScope.podcasts[$state.params.podcast].podcasts[$state.params.episode];
   $scope.episode.playbackURL = '../../userdata/podcasts/' + $scope.episode.hash + '.mp3';
   $scope.episode.watched = true;
 
@@ -77,7 +81,9 @@ zeus.controller('PlayerPageCtrl', ['$scope', '$rootScope', '$route', '$location'
     // Destroy the interval when the $scope is destroyed (such as on a new page).
     $scope.playback.pausePodcast();
   });
-}]);
+};
+
+PlayerPageCtrl.$inject = ['$scope', '$rootScope', '$state', '$location', '$interval', '$timeout', 'ngAudio'];
 
 function parseTime(input) {
   var totalSec = input;

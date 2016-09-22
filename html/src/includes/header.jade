@@ -1,12 +1,12 @@
 header(ng-if="$root.fullyLoaded")
   md-toolbar#header-toolbar
     .md-toolbar-tools
-      md-button(aria-label="Podcasts" ng-href="#/").md-icon-button
+      md-button(aria-label="Podcasts" ui-sref="home").md-icon-button
         md-icon(md-font-library="material-icons") settings_input_antenna
       span(flex)
-      md-button(aria-label="Operation Zeus" ng-href="#/") Operation Zeus
+      md-button(aria-label="Operation Zeus" ui-sref="home") Operation Zeus
       span(flex)
-      md-button(aria-label="About" ng-href="#/about").md-icon-button
+      md-button(aria-label="About" ui-sref="about").md-icon-button
         md-icon(md-font-library="material-icons") info_outline
-      md-button(aria-label="Settings" ng-href="#/settings").md-icon-button
+      md-button(aria-label="Settings" ui-sref="settings").md-icon-button
         md-icon(md-font-library="material-icons") settings
