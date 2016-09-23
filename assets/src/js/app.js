@@ -47,13 +47,6 @@ var zeus = angular.module('zeus', [
         }
       }
     });
-
-  // $stateProvider.state(homeState);
-  // $stateProvider.state(podcastState);
-  // $stateProvider.state(settingState);
-  // $stateProvider.state(aboutState);
-  // $stateProvider.state(playPodcastState);
-  // $stateProvider.state(podcastState);
 }]);
 
 angular
