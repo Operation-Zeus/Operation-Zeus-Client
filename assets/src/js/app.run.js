@@ -5,7 +5,7 @@ angular
   .run(runBlock);
 
 function runBlock($window, $rootScope, $location, $interval) {
-  $rootScope.darkTheme = true;
+  $rootScope.nowPlaying = {};
   $rootScope.podcasts = [];
 
   Zeus.loadSettings(function (data) {

@@ -46,7 +46,3 @@ section(layout="column" flex="90" flex-offset="5" ng-controller="PlayerPageCtrl"
       span(ng-click="playback.nextEpisode()").hover
         md-icon(md-icon-library="material-icons") skip_next
         md-tooltip(md-direction="bottom") Skip to next episode
-
-  section(layout="row" ng-hide)
-    audio#audioSource
-      source(ng-src="{{ ::episode.playbackURL }}")

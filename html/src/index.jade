@@ -8,8 +8,13 @@ html(lang="en" ng-app="zeus")
 
     md-content
       main(flex)
-        md-content(ng-if="$root.fullyLoaded" ng-class="{ 'slide-left': $root.settings.animations }" flex)
-          ui-view
+        span(ng-show="$root.nowPlaying.playing" style="position: absolute; z-index: 5; right: 1px;")
+          md-button(ui-sref="playPodcast({ podcast: $root.nowPlaying.podcastId, episode: $root.nowPlaying.episodeId })" aria-label="Now playing").md-icon-button
+            md-icon(md-icon-library="material-icons") chevron_right
+            md-tooltip(md-direction="left") Now playing 
+            
+        md-content(ng-if="$root.fullyLoaded" ng-class="{ 'slide-left': $root.settings.animations }" flex ui-view="main")
+        md-content(ng-if="$root.fullyLoaded" ng-class="{ 'slide-left': $root.settings.animations }" flex ui-view="player")
     article(ng-hide="$root.fullyLoaded")#splash-screen
       h1 Loading...
       h4 "Code names are fun" -CGPGrey

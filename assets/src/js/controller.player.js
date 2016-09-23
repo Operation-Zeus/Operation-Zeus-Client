@@ -6,12 +6,15 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
   $scope.podcast = $rootScope.podcasts[$state.params.podcast];
   $scope.episode = $rootScope.podcasts[$state.params.podcast].podcasts[$state.params.episode];
   $scope.episode.playbackURL = '../../userdata/podcasts/' + $scope.episode.hash + '.mp3';
-  $scope.episode.watched = true;
+
+  $rootScope.nowPlaying.playing = true;
+  $rootScope.nowPlaying.podcastId = $state.params.podcast;
+  $rootScope.nowPlaying.episodeId = $state.params.episode;
 
   var updateInterval = null;
 
   ngAudio.unlock = undefined;
-  $scope.sound = ngAudio.load('audioSource');
+  $scope.sound = ngAudio.load('../../userdata/podcasts/' + $scope.episode.hash + '.mp3');
 
   $scope.playback = {
     currentlyPlaying: false,
@@ -78,6 +81,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
   angular.element(document.querySelector('[data-bind="episode.description"]')).html($scope.episode.description);
 
   $scope.$on('destroy', function () {
+    console.log('Scope destroyed!');
     // Destroy the interval when the $scope is destroyed (such as on a new page).
     $scope.playback.pausePodcast();
   });

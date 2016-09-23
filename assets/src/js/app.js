@@ -5,41 +5,54 @@ var zeus = angular.module('zeus', [
   'ngMaterial',
   'ngContextMenu'
 ]).config(['$stateProvider', function($stateProvider) {
-  var homeState = {
-    name: 'home',
-    url: '/',
-    templateUrl: 'partials/home.html'
-  };
+  $stateProvider
+    .state('home', {
+      url: '/',
+      views: {
+        'main': {
+          templateUrl: 'partials/home.html'
+        }
+      }
+    })
+    .state('podcast', {
+      url: '/podcast/{id}',
+      views: {
+        'main': {
+          templateUrl: 'partials/podcast.html'
+        }
+      }
+    })
+    .state('settings', {
+      url: '/settings',
+      views: {
+        'main': {
+          templateUrl: 'partials/settings.html'
+        }
+      }
+    })
+    .state('about', {
+      url: '/about',
+      views: {
+        'main': {
+          templateUrl: 'partials/about.html'
+        }
+        // 'player': { }
+      }
+    })
+    .state('playPodcast', {
+      url: '/play/{podcast}/{episode}',
+      views: {
+        'main': {
+          templateUrl: 'partials/player.html'
+        }
+      }
+    });
 
-  var podcastState = {
-    name: 'podcast',
-    url: '/podcast/{id}',
-    templateUrl: 'partials/podcast.html'
-  };
-
-  var settingState = {
-    name: 'settings',
-    url: '/settings',
-    templateUrl: 'partials/settings.html'
-  };
-
-  var aboutState = {
-    name: 'about',
-    url: '/about',
-    templateUrl: 'partials/about.html'
-  };
-
-  var playPodcastState = {
-    name: 'playPodcast',
-    url: '/play/{podcast}/{episode}',
-    templateUrl: 'partials/player.html'
-  };
-
-  $stateProvider.state(homeState);
-  $stateProvider.state(podcastState);
-  $stateProvider.state(settingState);
-  $stateProvider.state(aboutState);
-  $stateProvider.state(playPodcastState);
+  // $stateProvider.state(homeState);
+  // $stateProvider.state(podcastState);
+  // $stateProvider.state(settingState);
+  // $stateProvider.state(aboutState);
+  // $stateProvider.state(playPodcastState);
   // $stateProvider.state(podcastState);
 }]);
 
