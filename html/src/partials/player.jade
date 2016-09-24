@@ -1,15 +1,13 @@
 section(layout="column" flex="90" flex-offset="5" ng-controller="PlayerPageCtrl")
   section(layout="row" layout-align="center")
-    md-card
-      md-card-title(style="max-height: 60px;")
+    img(ng-src="{{ ::episode.image.url }}" alt="{{ episode.title }}" height="400" align="center" ng-click="showNotes = true" ng-hide="showNotes" style="margin-top: 1em;").hover
+    
+    md-card(ng-show="showNotes" style="width: 80%; overflow: auto; height: 400px;")
+      md-card-title
         md-card-title-text
-          span(ng-bind="podcast.meta.title").md-headline
-          span(ng-bind="episode.title").md-subhead
-        md-card-title-media
-          .md-media-lg.card-media
-            img(ng-src="{{ ::episode.image.url }}" alt="{{ episode.title }}" style="max-width: 152px;")
-      md-card-content(style="overflow: auto; max-width: 500px; max-height: 300px;")
-        span(data-bind="episode.description").md-body-1
+          span(ng-bind="podcast.meta.title" ng-click="showNotes = false").md-headline.hover
+          span(ng-bind="episode.title" ng-click="showNotes = false").md-subhead.hover
+          span(data-bind="episode.description" style="max-width: 500px").md-body-1        
 
   section(layout="row" layout-align="center center").no-select
     section(flex="10" flex-offset="5")
