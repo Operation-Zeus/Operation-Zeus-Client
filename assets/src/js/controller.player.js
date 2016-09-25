@@ -2,8 +2,9 @@ angular
   .module('zeus')
   .controller('PlayerPageCtrl', PlayerPageCtrl);
 
-function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeout, $mdInkRipple, ngAudio) {
+function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeout, $document, ngAudio) {
   $scope.showNotes = false;
+  $scope.alreadyCanPlayed = false;
   $scope.podcast = $rootScope.podcasts[$state.params.podcast];
   $scope.episode = $rootScope.podcasts[$state.params.podcast].podcasts[$state.params.episode];
   $scope.episode.playbackURL = '../../userdata/podcasts/' + $scope.episode.hash + '.mp3';
@@ -15,7 +16,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
   var updateInterval = null;
 
   ngAudio.unlock = undefined;
-  $scope.sound = ngAudio.load('../../userdata/podcasts/' + $scope.episode.hash + '.mp3');
+  $scope.sound = ngAudio.load($scope.episode.playbackURL);
 
   $scope.playback = {
     currentlyPlaying: false,
@@ -83,13 +84,22 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
     $scope.sound.volume = $scope.playback.volume / 100;
   });
 
-  // ngAudio has to load the mp3 before we can set the time, so wait a hot sec.
-  $timeout(function () {
+  $scope.$watch('sound.canPlay', function () {
+    if ($scope.alreadyCanPlayed) {
+      return;
+    }
+
+    $scope.alreadyCanPlayed = true;
     $scope.sound.currentTime = $scope.episode.currentTime || 0;  // Load saved time
-  }, 400);
+
+    // For some reason, we get a "currently in digest" error if we click immediately. So wait partially.
+    $timeout(function () {
+      document.querySelector('span[ng-click="playback.playPodcast()"]').click();
+    }, 100)
+  });
 };
 
-PlayerPageCtrl.$inject = ['$scope', '$rootScope', '$state', '$location', '$interval', '$timeout', '$mdInkRipple', 'ngAudio'];
+PlayerPageCtrl.$inject = ['$scope', '$rootScope', '$state', '$location', '$interval', '$timeout', '$document', 'ngAudio'];
 
 function parseTime(input) {
   var totalSec = input;
