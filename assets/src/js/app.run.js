@@ -14,6 +14,8 @@ function runBlock($window, $rootScope, $location, $interval) {
         theme: 'light',
         animations:  true,
         analytics:  true,
+        voiceBoost: true,
+        smartSpeed: true,
         autoplay:  true,
         volume: 50,
         cacheImages: true,

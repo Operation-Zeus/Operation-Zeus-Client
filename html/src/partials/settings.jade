@@ -18,6 +18,14 @@ section(ng-controller="SettingPageCtrl" layout="column" flex-offset="5")
         td
           md-checkbox(ng-model="settings.analytics" aria-label="Analytics").md-primary
       tr
+        td Smart Speed
+        td
+          md-checkbox(ng-model="settings.smartSpeed" aria-label="Smart Speed").md-primary
+      tr
+        td Voice Boost
+        td
+          md-checkbox(ng-model="settings.voiceBoost" aria-label="Voice Boost").md-primary
+      tr
         td Volume
         td
           md-slider(flex md-discrete ng-model="settings.volume" min="0" max="100" step="1" aria-label="Volume").md-primary
