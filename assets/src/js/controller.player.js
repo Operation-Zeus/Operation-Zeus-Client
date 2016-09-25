@@ -2,7 +2,7 @@ angular
   .module('zeus')
   .controller('PlayerPageCtrl', PlayerPageCtrl);
 
-function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeout, $document, ngAudio) {
+function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeout, ngAudio) {
   $scope.showNotes = false;
   $scope.alreadyCanPlayed = false;
   $scope.podcast = $rootScope.podcasts[$state.params.podcast];
