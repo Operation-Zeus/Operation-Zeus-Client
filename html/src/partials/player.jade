@@ -1,5 +1,5 @@
-section(layout="column" flex="90" flex-offset="5" ng-controller="PlayerPageCtrl")
-  section(layout="row" layout-align="center")
+article(layout="column" flex="90" flex-offset="5" ng-controller="PlayerPageCtrl")
+  article(layout="row" layout-align="center")
     img(ng-src="{{ ::episode.image.url }}" alt="{{ episode.title }}" height="400" align="center" ng-click="showNotes = true" ng-hide="showNotes" style="margin-top: 1em;").hover
     
     md-card(ng-show="showNotes" style="width: 80%; overflow: auto; height: 400px;")
@@ -9,7 +9,7 @@ section(layout="column" flex="90" flex-offset="5" ng-controller="PlayerPageCtrl"
           span(ng-bind="episode.title" ng-click="showNotes = false").md-subhead.hover
           span(data-bind="episode.description" style="max-width: 500px").md-body-1        
 
-  section(layout="row" layout-align="center center").no-select
+  article(layout="row" layout-align="center center").no-select
     section(flex="10" flex-offset="5")
       span(ng-bind="sound.currentTime | trackTime")
     section(flex="90").no-select
@@ -20,7 +20,7 @@ section(layout="column" flex="90" flex-offset="5" ng-controller="PlayerPageCtrl"
     section(flex="10" flex-offset="5")
       span(ng-bind="sound.remaining | trackTime")
 
-  section(layout="row" layout-align="center").no-select
+  article(layout="row" layout-align="center").no-select
     section(flex="20" flex-offset="15")
       span(ng-click="playback.lastEpisode()").hover
         md-icon(md-icon-library="material-icons") skip_previous
@@ -44,3 +44,23 @@ section(layout="column" flex="90" flex-offset="5" ng-controller="PlayerPageCtrl"
       span(ng-click="playback.nextEpisode()").hover
         md-icon(md-icon-library="material-icons") skip_next
         md-tooltip(md-direction="bottom") Skip to next episode
+        
+  article(layout="row" layout-align="center")
+    section(flex="22")
+      md-button(style="width: 150px;" aria-label="Smart Speed" ng-click="playback.smartSpeed = !playback.smartSpeed" ng-class="{ 'md-primary md-raised': playback.smartSpeed }").no-select
+        span Smart Speed: 
+        span(ng-show="playback.smartSpeed") On
+        span(ng-hide="playback.smartSpeed") Off
+    section(flex="45")
+      md-slider-container
+        span.no-select
+          md-icon(md-icon-library="material-icons" ng-show="playback.volume > 70") volume_up
+          md-icon(md-icon-library="material-icons" ng-show="playback.volume >= 30 && playback.volume <= 70") volume_down
+          md-icon(md-icon-library="material-icons" ng-show="playback.volume > 0 && playback.volume < 30") volume_mute
+          md-icon(md-icon-library="material-icons" ng-show="playback.volume == 0") volume_off
+        md-slider(ng-model="playback.volume" min="0" max="100" aria-label="Volume" md-range).md-primary
+    section(flex="30")
+      md-button(style="width: 150px;" aria-label="Voice Boost" ng-click="playback.voiceBoost = !playback.voiceBoost" ng-class="{ 'md-primary md-raised': playback.voiceBoost }").no-select
+        span Voice Boost: 
+        span(ng-show="playback.voiceBoost") On
+        span(ng-hide="playback.voiceBoost") Off

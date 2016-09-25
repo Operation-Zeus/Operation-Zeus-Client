@@ -23,8 +23,9 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
     tooltipLeft: 0,
     tooltipTop: 0,
     showHoverPosition: false,
+    volume: $rootScope.settings.volume,
     lastEpisode: function () {
-      $location.url('/play/' + $route.current.params.podcast + '/' +(parseInt($route.current.params.episode) + 1));
+      $location.url('/play/' + $state.params.podcast + '/' + (parseInt($state.params.episode) + 1));
       $scope.sound.pause();
     },
     replay10Seconds: function () {
@@ -52,7 +53,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
       $scope.sound.currentTime += 30;
     },
     nextEpisode: function () {
-      $location.url('/play/' + $route.current.params.podcast + '/' + (parseInt($route.current.params.episode) - 1));
+      $location.url('/play/' + $state.params.podcast + '/' + (parseInt($state.params.episode) - 1));
       $scope.sound.pause();
     },
     goToPosition: function (e) {
@@ -75,11 +76,17 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
     }
   };
 
+  angular.element(document.querySelector('[data-bind="episode.description"]')).html($scope.episode.description);
+
+  $scope.sound.volume = $scope.playback.volume / 100; // Set initial volume
+  $scope.$watch('playback.volume', function () { // Watch for changes, so we can set the volume
+    $scope.sound.volume = $scope.playback.volume / 100;
+  });
+
+  // ngAudio has to load the mp3 before we can set the time, so wait a hot sec.
   $timeout(function () {
     $scope.sound.currentTime = $scope.episode.currentTime || 0;  // Load saved time
   }, 400);
-
-  angular.element(document.querySelector('[data-bind="episode.description"]')).html($scope.episode.description);
 };
 
 PlayerPageCtrl.$inject = ['$scope', '$rootScope', '$state', '$location', '$interval', '$timeout', '$mdInkRipple', 'ngAudio'];
