@@ -15,7 +15,7 @@ zeus.controller('SettingPageCtrl', ['$scope', '$rootScope', function ($scope, $r
       analytics: true,
       smartSpeed: true,
       voiceBoost: true,
-      autoplay: true,
+      autoPlay: true,
       volume: 50,
       cacheImages: true,
       autoUpdate: true,

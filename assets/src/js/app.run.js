@@ -16,7 +16,7 @@ function runBlock($window, $rootScope, $location, $interval) {
         analytics:  true,
         voiceBoost: true,
         smartSpeed: true,
-        autoplay:  true,
+        autoPlay:  true,
         volume: 50,
         cacheImages: true,
         autoUpdate: true,
