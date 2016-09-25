@@ -77,6 +77,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
     }
   };
 
+  // Because ng-bind-html-template hates me.
   angular.element(document.querySelector('[data-bind="episode.description"]')).html($scope.episode.description);
 
   $scope.sound.volume = $scope.playback.volume / 100; // Set initial volume
@@ -85,6 +86,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
   });
 
   $scope.$watch('sound.canPlay', function () {
+    // This gets called TWICE, even though it should only be called once. So we have a temp variable to make sure we only run this once
     if ($scope.alreadyCanPlayed) {
       return;
     }
@@ -95,11 +97,11 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
     // For some reason, we get a "currently in digest" error if we click immediately. So wait partially.
     $timeout(function () {
       document.querySelector('span[ng-click="playback.playPodcast()"]').click();
-    }, 100)
+    }, 100);
   });
 };
 
-PlayerPageCtrl.$inject = ['$scope', '$rootScope', '$state', '$location', '$interval', '$timeout', '$document', 'ngAudio'];
+PlayerPageCtrl.$inject = ['$scope', '$rootScope', '$state', '$location', '$interval', '$timeout', 'ngAudio'];
 
 function parseTime(input) {
   var totalSec = input;
