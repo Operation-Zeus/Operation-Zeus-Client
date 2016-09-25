@@ -4,7 +4,7 @@ zeus.controller('SettingPageCtrl', ['$scope', '$rootScope', function ($scope, $r
 
   $scope.saveSettings = function () {
     $rootScope.settings = $scope.settings;
-    
+
     Zeus.saveSettings($rootScope.settings);
   };
 
@@ -13,6 +13,8 @@ zeus.controller('SettingPageCtrl', ['$scope', '$rootScope', function ($scope, $r
       theme: 'light',
       animations: true,
       analytics: true,
+      smartSpeed: true,
+      voiceBoost: true,
       autoplay: true,
       volume: 50,
       cacheImages: true,
