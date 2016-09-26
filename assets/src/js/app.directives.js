@@ -32,3 +32,16 @@ function PodcastEpisodeDirective() {
     templateUrl: 'partials/podcast-episode.html'
   }
 }
+
+/* @ngInject */
+function ngRightClick($parse) { // Stack overflow is god
+  return function(scope, element, attrs) {
+    var fn = $parse(attrs.ngRightClick);
+    element.bind('contextmenu', function(e) {
+      scope.$apply(function() {
+        e.preventDefault();
+        fn(scope, { $event: e });
+      });
+    });
+  };
+}
