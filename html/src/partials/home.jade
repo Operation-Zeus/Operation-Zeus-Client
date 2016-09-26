@@ -1,6 +1,15 @@
-article(ng-controller="HomePageCtrl" layout="column" layout-align="space-between" flex-offset="5" data-context-menu="partials/context-menu-podcast.html")
+article(ng-controller="HomePageCtrl" 
+  layout="column" 
+  layout-align="space-between" 
+  flex-offset="5" 
+  data-context-menu="partials/context-menu-podcast.html")
+  
   section(layout="row")
-    podcast-panel(ng-repeat="podcast in podcasts track by $index" data-context-menu="partials/context-menu-podcast-hover.html")
+    podcast-panel(ng-repeat="podcast in podcasts track by $index"
+      data-context-menu="partials/context-menu-podcast-hover.html"
+      ng-right-click="selectPodcast(podcast, $event)"
+      ng-class="{ 'podcast-selected': podcast.selected }").no-select
+      
     p(ng-show="podcasts.length < 1").md-body-1 You currently have no podcasts! Why don't you add one...?
     
   section(layout="column")

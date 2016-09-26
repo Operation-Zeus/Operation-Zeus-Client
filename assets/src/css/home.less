@@ -1,11 +1,17 @@
 podcast-panel {
   margin: .5em 0 1em 1em;
+  height: 125px;
+
+  .podcast-panel > img {
+    max-width: 125px;
+    position: relative;
+    display: inline;
+  }
 }
 
-.podcast-panel, .podcast-panel > img {
-  max-width: 125px;
-  position: relative;
-  display: inline;
+.podcast-selected {
+  border-radius: 0;
+  box-shadow: 2px 2px 2px 2px #2196F3;
 }
 
 .btn-group {

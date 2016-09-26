@@ -1,4 +1,9 @@
-zeus.controller('HomePageCtrl', ['$scope', '$rootScope', '$timeout', '$mdDialog', function ($scope, $rootScope, $timeout, $mdDialog) {
+angular
+  .module('zeus')
+  .controller('HomePageCtrl', HomePageCtrl);
+
+/* @ngInject */
+function HomePageCtrl($scope, $rootScope, $timeout, $document, $mdDialog) {
   $scope.podcasts = $rootScope.podcasts;
   console.log($scope.podcasts);
 
@@ -60,4 +65,29 @@ zeus.controller('HomePageCtrl', ['$scope', '$rootScope', '$timeout', '$mdDialog'
       });
     }
   };
-}]);
+
+  // On right-click, select our podcast
+  $scope.selectPodcast = function (podcast, $event) {
+    // Unselect all other podcasts
+    $scope.handlePodcastUnselect($event);
+
+    $scope.podcasts[podcast.id].selected = true;
+  };
+
+  // On every other click, remove that selection
+  $scope.handlePodcastUnselect = function($event) {
+    // Keep the selection if using the context menu
+    if (angular.element($event.srcElement).parent().attr('data-context-menu')) {
+      return;
+    }
+
+    // Remove selection from all others
+    for (var i = 0; i < $scope.podcasts.length; i++) {
+      $scope.podcasts[i].selected = false;
+    }
+  };
+
+  $document.on('click', function ($event) {
+    $scope.handlePodcastUnselect($event);
+  });
+}
