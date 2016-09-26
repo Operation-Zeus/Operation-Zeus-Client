@@ -56,5 +56,3 @@ function PodcastPageCtrl($scope, $rootScope, $state, $location, $timeout) {
     Zeus.updateSavedPodcast($scope.podcast);
   };
 };
-
-PodcastPageCtrl.$inject = ['$scope', '$rootScope', '$state', '$location', '$timeout'];

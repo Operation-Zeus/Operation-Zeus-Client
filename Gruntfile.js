@@ -1,14 +1,24 @@
 module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    ngAnnotate: {
+      options: {
+        add: true,
+      },
+      app: {
+        files: {
+          'assets/build/js/operation-zeus.js' : 'assets/src/js/*.js'
+        }
+      }
+    },
     uglify: {
       options: {
-        mangle: false,
+        mangle: true,
         compress: true,
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: 'assets/src/js/*.js',
+        src: 'assets/build/js/operation-zeus.js',
         dest: 'assets/build/js/<%= pkg.name %>.min.js'
       }
     },
@@ -42,7 +52,7 @@ module.exports = function (grunt) {
     watch: {
       js: {
         files: ['assets/src/js/*.js'],
-        tasks: ['uglify']
+        tasks: ['ngAnnotate', 'uglify']
       },
       css: {
         files: 'assets/src/css/*.less',
@@ -60,6 +70,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jade');
+  grunt.loadNpmTasks('grunt-ng-annotate');
 
   // Default task(s).
   grunt.registerTask('default', ['watch']);

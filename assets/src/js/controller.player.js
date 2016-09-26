@@ -2,6 +2,7 @@ angular
   .module('zeus')
   .controller('PlayerPageCtrl', PlayerPageCtrl);
 
+/* @ngInject */
 function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeout, ngAudio) {
   $scope.showNotes = false;
   $scope.alreadyCanPlayed = false;
@@ -100,8 +101,6 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
     }, 100);
   });
 };
-
-PlayerPageCtrl.$inject = ['$scope', '$rootScope', '$state', '$location', '$interval', '$timeout', 'ngAudio'];
 
 function parseTime(input) {
   var totalSec = input;

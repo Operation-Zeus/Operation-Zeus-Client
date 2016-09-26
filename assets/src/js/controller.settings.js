@@ -1,4 +1,9 @@
-zeus.controller('SettingPageCtrl', ['$scope', '$rootScope', function ($scope, $rootScope) {
+angular
+  .module('zeus')
+  .controller('SettingPageCtrl', SettingPageCtrl);
+
+/* @ngInject */
+function SettingPageCtrl($scope, $rootScope) {
   $scope.showAdvancedSettings = false;
   $scope.settings = $rootScope.settings;
 
@@ -24,4 +29,4 @@ zeus.controller('SettingPageCtrl', ['$scope', '$rootScope', function ($scope, $r
 
     $scope.saveSettings();
   };
-}]);
+}

@@ -55,7 +55,8 @@ angular
   .directive('preloader', PreloaderDirective)
   .directive('preloaderSmall', PreloaderSmallDirective)
   .directive('preloaderSmallBlue', PreloaderSmallBlueDirective)
-  .directive('podcastEpisode', PodcastEpisodeDirective);
+  .directive('podcastEpisode', PodcastEpisodeDirective)
+  .directive('ngRightClick', ngRightClick);
 
 Number.prototype.round = function (p) {
   p = p || 10;

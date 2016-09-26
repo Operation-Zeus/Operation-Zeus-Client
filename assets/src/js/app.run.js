@@ -4,6 +4,7 @@ angular
   .module('zeus')
   .run(runBlock);
 
+/* @ngInject */
 function runBlock($window, $rootScope, $location, $interval) {
   $rootScope.nowPlaying = {};
   $rootScope.podcasts = [];

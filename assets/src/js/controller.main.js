@@ -1,4 +1,9 @@
-zeus.controller('MainCtrl', ['$scope', '$rootScope'/*, '$route'*/, '$window', '$location', '$document', function ($scope, $rootScope/*, $route*/, $window, $location, $document) {
+angular
+  .module('zeus')
+  .controller('MainCtrl', MainCtrl);
+
+/* @ngInject */
+function MainCtrl($scope, $rootScope, $window, $location, $document) {
   $rootScope.$on('$routeChangeError', function (event, curr, prev, rejection) {
     if (!prev) {
       $location.url('/');
@@ -26,4 +31,4 @@ zeus.controller('MainCtrl', ['$scope', '$rootScope'/*, '$route'*/, '$window', '$
       e.preventDefault();
     }
   });
-}]);
+}
