@@ -1,5 +1,6 @@
 
 ngRightClick.$inject = ["$parse"];
+routeConfig.$inject = ["$stateProvider", "$locationProvider"];
 runBlock.$inject = ["$window", "$rootScope", "$location", "$interval"];
 HomePageCtrl.$inject = ["$scope", "$rootScope", "$timeout", "$document", "$mdDialog"];
 MainCtrl.$inject = ["$scope", "$rootScope", "$window", "$location", "$document"];
@@ -59,7 +60,25 @@ var zeus = angular.module('zeus', [
   'ngAnimate',
   'ngMaterial',
   'ngContextMenu'
-]).config(['$stateProvider', function($stateProvider) {
+])
+  .config(routeConfig);
+
+angular
+  .module('zeus')
+  .directive('podcastPanel', PodcastPanelDirective)
+  .directive('preloader', PreloaderDirective)
+  .directive('preloaderSmall', PreloaderSmallDirective)
+  .directive('preloaderSmallBlue', PreloaderSmallBlueDirective)
+  .directive('podcastEpisode', PodcastEpisodeDirective)
+  .directive('ngRightClick', ngRightClick);
+
+Number.prototype.round = function (p) {
+  p = p || 10;
+  return parseFloat(this.toFixed(p));
+};
+
+/* @ngInject*/
+function routeConfig($stateProvider, $locationProvider) {
   $stateProvider
     .state('home', {
       url: '/',
@@ -91,7 +110,6 @@ var zeus = angular.module('zeus', [
         'main': {
           templateUrl: 'partials/about.html'
         }
-        // 'player': { }
       }
     })
     .state('playPodcast', {
@@ -102,21 +120,7 @@ var zeus = angular.module('zeus', [
         }
       }
     });
-}]);
-
-angular
-  .module('zeus')
-  .directive('podcastPanel', PodcastPanelDirective)
-  .directive('preloader', PreloaderDirective)
-  .directive('preloaderSmall', PreloaderSmallDirective)
-  .directive('preloaderSmallBlue', PreloaderSmallBlueDirective)
-  .directive('podcastEpisode', PodcastEpisodeDirective)
-  .directive('ngRightClick', ngRightClick);
-
-Number.prototype.round = function (p) {
-  p = p || 10;
-  return parseFloat(this.toFixed(p));
-};
+}
 
 const shell = require('electron').shell;
 
