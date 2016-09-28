@@ -1,7 +1,7 @@
-article(ng-controller="HomePageCtrl" 
-  layout="column" 
-  layout-align="space-between" 
-  flex-offset="5" 
+article(ng-controller="HomePageCtrl"
+  layout="column"
+  layout-align="space-between"
+  flex-offset="5"
   data-context-menu="partials/menus/context-home.html")
   
   section(layout="row")
@@ -12,25 +12,11 @@ article(ng-controller="HomePageCtrl"
       
     p(ng-show="podcasts.length < 1").md-body-1 You currently have no podcasts! Why don't you add one...?
     
-  section(layout="column")
-    md-fab-toolbar(md-direction="left")
-      md-fab-trigger.align-with-text
-        md-button(aria-label="menu").md-fab.md-primary
-          md-icon(md-font-library="material-icons") menu
-          
-      md-toolbar
-        md-fab-actions.md-toolbar-tools
-          md-button(aria-label="Edit Podcasts" ng-click="editPodcasts()").md-icon-button
-            md-icon(md-font-library="material-icons") mode_edit
-            //- md-tooltip() Edit Podcasts
-          md-button(aria-label="Refresh all feeds" ng-click="refreshAllPodcasts()").md-icon-button
-            md-icon(md-font-library="material-icons") cached
-            //- md-tooltip() Refresh All Podcast Feeds
-          md-button(aria-label="Add Podcast" ng-click="openPodcastModal($event)").md-icon-button
-            md-icon(md-font-library="material-icons") add
-            //- md-tooltip() Add Podcast
-            
-  div(style="display: none")
+  md-button(aria-label="Add Podcast" ng-click="openPodcastModal($event)" style="position: absolute; bottom: 0; right: 25px;").md-fab.md-primary
+    md-icon(md-font-library="material-icons") add
+    md-tooltip Add Podcast
+
+  div(style="display: none;")
     div.md-dialog-container#addPodcastModal
       md-dialog(layout-padding)
         form(ng-model="podcastInfo" ng-submit="addNewPodcast(podcastInfo)")
