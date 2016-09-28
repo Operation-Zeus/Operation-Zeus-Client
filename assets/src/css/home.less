@@ -24,3 +24,30 @@ podcast-panel {
     padding: 0 3px;
   }
 }
+
+md-virtual-repeat-container .podcast-autocomplete-custom-template li {
+  span {
+    letter-spacing: normal;
+    margin-left: 2px;
+    line-height: 20px;
+  }
+
+  img {
+    height: 18px;
+    width: 18px;
+  }
+
+  border-bottom: 1px solid #ccc;
+  height: auto;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  white-space: normal;
+
+  :last-child {
+    border-bottom-width: 0;
+  }
+};
+
+#addPodcastModal > md-dialog {
+  width: 55%;
+}

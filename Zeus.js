@@ -12,6 +12,25 @@ Zeus.podcasts = [];
 Zeus.settings = {};
 
 /**
+ * Queries iTunes for podcasts
+ * @param {STRING} input
+ * @param {FUNCTION} callback
+ */
+Zeus.searchPodcastOnITunes = function (input, callback) {
+  var url = `https://itunes.apple.com/search?term=${encodeURIComponent(input)}&country=US&media=podcast`;
+
+  request(url, (error, response, body) => {
+    if (error || response.statusCode != 200) {
+      return callback(new Error('Failed to find podcasts'), null);
+    }
+
+    api.log('request', `Searched podcasts for ${input}`);
+    body = JSON.parse(body);
+    callback(null, body);
+  });
+};
+
+/**
  * Fetches the XML from an RSS feed
  * @param {STRING} url
  * @param {BOOLEAN} newPodcast

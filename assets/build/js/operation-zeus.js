@@ -2,7 +2,7 @@
 ngRightClick.$inject = ["$parse"];
 routeConfig.$inject = ["$stateProvider", "$locationProvider"];
 runBlock.$inject = ["$window", "$rootScope", "$location", "$interval"];
-HomePageCtrl.$inject = ["$scope", "$rootScope", "$timeout", "$document", "$mdDialog"];
+HomePageCtrl.$inject = ["$scope", "$rootScope", "$timeout", "$document", "$q", "$mdDialog"];
 MainCtrl.$inject = ["$scope", "$rootScope", "$window", "$location", "$document"];
 PlayerPageCtrl.$inject = ["$scope", "$rootScope", "$state", "$location", "$interval", "$timeout", "ngAudio"];
 SettingPageCtrl.$inject = ["$scope", "$rootScope"];
@@ -223,8 +223,10 @@ angular
   .controller('HomePageCtrl', HomePageCtrl);
 
 /* @ngInject */
-function HomePageCtrl($scope, $rootScope, $timeout, $document, $mdDialog) {
+function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
+  var podcastAutocompleteTimer;
   $scope.podcasts = $rootScope.podcasts;
+  $scope.podcastInfo = {};
   console.log($scope.podcasts);
 
   $scope.closePodcastModal = function () {
@@ -269,6 +271,27 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $mdDialog) {
         $scope.$apply();
       }, 2000); // Give image time to download
     });
+  };
+
+  /**
+   * Called from the auto-complete, sets a timeout before loading itunes results
+   * @param {STRING} podcastName
+   */
+  $scope.searchForPodcast = function (podcastName) {
+    var deferred = $q.defer();
+    console.log(podcastName);
+
+    // Wait 2 seconds (for them to stop typing) before going
+    $timeout.cancel(podcastAutocompleteTimer);
+    podcastAutocompleteTimer = $timeout(function () {
+      loadPodcastSearchResults(podcastName, deferred);
+    }, 2000);
+
+    return deferred.promise;
+  };
+
+  $scope.autocompleteSelectItem = function (podcast) {
+    $scope.podcastInfo.url = podcast.feedUrl;
   };
 
   $scope.refreshAllPodcasts = function () {
@@ -367,6 +390,16 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $mdDialog) {
     }
 
     return podcastId;
+  }
+  function loadPodcastSearchResults(podcastName, deferred) {
+    Zeus.searchPodcastOnITunes(podcastName, function (error, result) {
+      if (error) {
+        throw error;
+      }
+
+      console.log(result.results);
+      deferred.resolve(result.results);
+    });
   }
 }
 
