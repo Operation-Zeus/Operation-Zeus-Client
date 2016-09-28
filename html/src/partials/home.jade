@@ -2,11 +2,11 @@ article(ng-controller="HomePageCtrl"
   layout="column" 
   layout-align="space-between" 
   flex-offset="5" 
-  data-context-menu="partials/context-menu-podcast.html")
+  data-context-menu="partials/menus/context-home.html")
   
   section(layout="row")
     podcast-panel(ng-repeat="podcast in podcasts track by $index"
-      data-context-menu="partials/context-menu-podcast-hover.html"
+      data-context-menu="partials/menus/podcast-select.html"
       ng-right-click="selectPodcast(podcast, $event)"
       ng-class="{ 'podcast-selected': podcast.selected }").no-select
       

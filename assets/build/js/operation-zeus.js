@@ -9,35 +9,35 @@ SettingPageCtrl.$inject = ["$scope", "$rootScope"];
 PodcastPageCtrl.$inject = ["$scope", "$rootScope", "$state", "$location", "$timeout"];function PodcastPanelDirective() {
   return {
     restrict: 'E',
-    templateUrl: 'partials/podcast-panel.html'
+    templateUrl: 'partials/directives/podcast-panel.html'
   }
 }
 
 function PreloaderDirective() {
   return {
     restrict: 'E',
-    templateUrl: 'partials/preloader.html'
+    templateUrl: 'partials/directives/preloader.html'
   }
 }
 
 function PreloaderSmallDirective() {
   return {
     restrict: 'E',
-    templateUrl: 'partials/preloader-small.html'
+    templateUrl: 'partials/directives/preloader-small.html'
   }
 }
 
 function PreloaderSmallBlueDirective() {
   return {
     restrict: 'E',
-    templateUrl: 'partials/preloader-small-blue.html'
+    templateUrl: 'partials/directives/preloader-small-blue.html'
   }
 }
 
 function PodcastEpisodeDirective() {
   return {
     restrict: 'E',
-    templateUrl: 'partials/podcast-episode.html'
+    templateUrl: 'partials/directives/podcast-episode.html'
   }
 }
 

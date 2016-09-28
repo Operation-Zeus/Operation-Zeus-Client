@@ -59,7 +59,7 @@ module.exports = function (grunt) {
         tasks: ['less']
       },
       jade: {
-        files: ['html/src/*.jade', 'html/src/partials/*.jade', 'html/src/includes/*.jade'],
+        files: ['html/src/*.jade', 'html/src/partials/*.jade', 'html/src/includes/*.jade', 'html/src/partials/directives/*.jade', 'html/src/partials/menus/*.jade', 'html/src/partials/modals/*.jade'],
         tasks: ['jade']
       }
     }
