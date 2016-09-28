@@ -87,7 +87,65 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $mdDialog) {
     }
   };
 
+  /**
+   * Shows options for a user to share a podcast on Facebook / Twitter / Tumblr
+   * @param {EVENT} e - $event
+   */
+  $scope.sharePodcast = function ($event) {
+    var podcastId = getSelectedPodcastId();
+  };
+
+  /**
+   * Opens up the podcast homepage in their browser
+   * @param {EVENT} e - $event
+   */
+  $scope.openPodcastWebpage = function ($event) {
+    var podcastId = getSelectedPodcastId();
+
+  };
+
+  /**
+   * Downloads all the un-heard podcasts
+   * @param {EVENT} e - $event
+   */
+  $scope.downloadAllPodcasts = function ($event) {
+    var podcastId = getSelectedPodcastId();
+
+  };
+
+  /**
+   * Removes the podcast from the list, after a confirmation
+   * @param {EVENT} e - $event
+   */
+  $scope.deletePodcast = function ($event) {
+    var podcastId = getSelectedPodcastId();
+
+    var confirm = $mdDialog.confirm()
+      .title('Remove podcast "' + $scope.podcasts[podcastId].meta.title +  '"?')
+      .ariaLabel('Remove podcast')
+      .targetEvent($event)
+      .ok('Remove')
+      .cancel('Cancel');
+
+    $mdDialog.show(confirm).then(function () {
+      console.log('You chose to delete!');
+    });
+  };
+
   $document.on('click', function ($event) {
     $scope.handlePodcastUnselect($event);
   });
+
+  function getSelectedPodcastId() {
+    var podcastId = null;
+
+    for (var i = 0; i < $scope.podcasts.length; i++) {
+      if ($scope.podcasts[i].selected) {
+        podcastId = i;
+        break;
+      }
+    }
+
+    return podcastId;
+  }
 }

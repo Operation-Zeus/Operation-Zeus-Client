@@ -1,21 +1,21 @@
 ul.menu#context-menu
   md-menu-content
     md-menu-item
-      md-button(ng-click="openPodcastModal($event)" data-context-menu="true")
+      md-button(ng-click="sharePodcast($event)" data-context-menu="true")
         md-icon(md-icon-library="material-icons") person_add
         span Share Podcast
     md-menu-item
-      md-button(ng-click="openPodcastModal($event)" data-context-menu="true")
+      md-button(ng-click="openPodcastWebpage($event)" data-context-menu="true")
         md-icon(md-icon-library="material-icons") open_in_browser
         span Podcast Webpage
     md-menu-divider
     md-menu-item
-      md-button(ng-click="openPodcastModal($event)" data-context-menu="true")
+      md-button(ng-click="downloadAllPodcasts($event)" data-context-menu="true")
         md-icon(md-icon-library="material-icons") file_download
         span Download All
     md-menu-divider
     md-menu-item
-      md-button(ng-click="openPodcastModal($event)" data-context-menu="true")
+      md-button(ng-click="deletePodcast($event)" data-context-menu="true")
         md-icon(md-icon-library="material-icons") delete_forever
         span Remove
   
