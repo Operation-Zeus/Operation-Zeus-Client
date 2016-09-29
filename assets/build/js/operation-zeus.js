@@ -541,6 +541,11 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
       document.querySelector('span[ng-click="playback.playPodcast()"]').click();
     }, 100);
   });
+
+  // Only update every second, that way we don't have a digest loop insanity by updating every millisecond.
+  $interval(function () {
+    $scope.playback.progress = $scope.sound.progress * 100;
+  }, 1000);
 };
 
 function parseTime(input) {
