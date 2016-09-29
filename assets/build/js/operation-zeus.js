@@ -465,6 +465,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
     tooltipLeft: 0,
     tooltipTop: 0,
     showHoverPosition: false,
+    progress: 0,
     volume: $rootScope.settings.volume,
     lastEpisode: function () {
       $location.url('/play/' + $state.params.podcast + '/' + (parseInt($state.params.episode) + 1));
@@ -498,22 +499,22 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
       $location.url('/play/' + $state.params.podcast + '/' + (parseInt($state.params.episode) - 1));
       $scope.sound.pause();
     },
-    goToPosition: function (e) {
+    goToPosition: function ($event) {
       var totalWidth = document.getElementsByTagName('md-progress-linear')[0].clientWidth;
-      var clickedAt = e.offsetX;
+      var clickedAt = $event.offsetX;
 
       var percent = (clickedAt / totalWidth).round(4);
       $scope.sound.currentTime = Math.round(($scope.sound.remaining + $scope.sound.currentTime) * percent);
     },
-    showPosition: function (e) {
+    showPosition: function ($event) {
       var totalWidth = document.getElementsByTagName('md-progress-linear')[0].clientWidth;
-      var clickedAt = e.offsetX;
+      var clickedAt = $event.offsetX;
 
       var percent = (clickedAt / totalWidth).round(4);
       $scope.playback.hoverTime = parseTime(Math.floor(($scope.sound.remaining + $scope.sound.currentTime) * percent));
 
-      $scope.playback.tooltipLeft = e.pageX - 28;
-      $scope.playback.tooltipTop = angular.element(document.querySelector('md-progress-linear')).prop('offsetTop') - 23;
+      $scope.playback.tooltipLeft = $event.pageX - 28 + 'px';
+      $scope.playback.tooltipTop = angular.element(document.querySelector('md-progress-linear')).prop('offsetTop') - 23 + 'px';
       $scope.playback.showHoverPosition = true;
     }
   };
