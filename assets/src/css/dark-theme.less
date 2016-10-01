@@ -1,0 +1,183 @@
+// Declare the variables associated with this theme
+@main-color: @blue-medium;
+@secondary-color: @blue-hard;
+@good-color: #42bd41;
+@warn-color: #D50000;
+@body-background: @grey-dark;
+@header-background: @grey-dark;
+@text-color-hard: @grey-light;
+@text-color-medium: @grey-medium;
+@text-color-light: @grey-hard;
+@shadow-multiplier: 1.7;
+@toast-background: #323232;
+@toast-error-background:  #f77;
+
+@body-color: @body-background;
+@sheet-color: lighten(@body-color, 6.5%);
+@hover-color: lighten(@sheet-color, 3.25%);
+
+// Set the ones needed to be changed
+body.dark-theme {
+  // Main general colors
+  color: @text-color-medium;
+
+  md-content {
+    background-color: @sheet-color;
+    color: @text-color-medium;
+  }
+
+  main, main > md-content {
+    background: @body-color !important;
+  }
+
+  // Typography
+  h1, h2, h3, h4, h5, h6 {
+    color: @text-color-hard;
+  }
+
+  .md-body-1 {
+    color: @text-color-medium;
+  }
+
+  .md-body-2 {
+    color: @text-color-hard;
+  }
+
+  .md-subhead {
+    color: @text-color-light !important;
+  }
+
+  a {
+    color: @secondary-color;
+  }
+
+  //SLIDER
+  .md-thumb-text {
+    color: white;
+  }
+
+  //CHECKBOXES
+  .md-checked .md-icon:after {
+    border-color: @sheet-color !important;
+  }
+
+  md-toolbar {
+    background-color: @sheet-color;
+
+    .md-button {
+      color: @text-color-medium;
+    }
+  }
+
+  md-progress-linear {
+    .md-bar {
+      background-color: @secondary-color;
+    }
+  }
+
+  md-menu-content {
+    background-color: @sheet-color;
+    color: @text-color-medium;
+  }
+
+  md-card {
+    background-color: initial;
+  }
+
+  md-list-item {
+    color: @text-color-hard;
+  }
+
+  md-tabs .md-tab:not(.md-active) {
+    color: @text-color-medium;
+  }
+
+  table.md-table {
+    color: @text-color-hard;
+
+    td, th, th.md-active, th.md-active md-icon {
+      color: @text-color-hard;
+    }
+
+    &.md-row-select {
+      tbody.md-body {
+        > tr.md-row:not([disabled]):hover,
+        > tr.md-selected {
+          // md-data-table marks this as important also...
+          background-color: @hover-color !important;
+        }
+      }
+    }
+  }
+
+  md-input-container {
+    label {
+      color: @text-color-light;
+    }
+
+    &.md-input-invalid label {
+      color: @warn-color;
+    }
+
+    .md-input {
+      color: @text-color-hard;
+    }
+  }
+
+  .md-button {
+    color: @text-color-medium;
+
+    &.md-action {
+      color: white;
+    }
+  }
+
+  .md-button.md-primary.md-raised {
+    color: @white;
+  }
+
+  .md-raised:not([disabled]) {
+    background-color: @sheet-color;
+
+    &.md-primary {
+      background-color: @main-color;
+    }
+
+    &.md-warn {
+      background-color: @warn-color;
+    }
+
+    &.md-focused, &:hover {
+      background-color: @hover-color;
+    }
+  }
+
+  .md-button.md-raised[disabled] {
+    //material-angular likes to add !important clauses
+    color: @text-color-light !important;
+  }
+
+  md-checkbox .md-icon {
+    border-color: @text-color-light;
+  }
+
+  md-input-container .md-input {
+    border-color: @text-color-light;
+  }
+
+  md-input-container.md-input-invalid .md-input {
+    border-color: @warn-color;
+  }
+
+  md-select md-select-value,
+  md-select md-select-value.md-select-placeholder {
+    border-color: @text-color-light;
+    color: @text-color-light;
+  }
+
+  md-radio-button:not(.md-checked) {
+    .md-off {
+      border-color: @text-color-light;
+    }
+  }
+}
