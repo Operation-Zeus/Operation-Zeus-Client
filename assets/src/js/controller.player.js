@@ -86,9 +86,6 @@ function PlayerPageCtrl($scope, $rootScope, $state, $interval, $timeout, hotkeys
     }
   };
 
-  // Because ng-bind-html-template hates me.
-  angular.element(document.querySelector('[data-bind="episode.description"]')).html($scope.podcastPlayer.episode.description);
-
   $scope.podcastPlayer.sound.volume = $scope.podcastPlayer.playback.volume / 100; // Set initial volume
 
   // Register our hotkeys, j -> l. (Apparently old video managers use these keys?)
@@ -124,11 +121,11 @@ function PlayerPageCtrl($scope, $rootScope, $state, $interval, $timeout, hotkeys
       }
     });
 
-  $scope.$watch('playback.volume', function () { // Watch for changes, so we can set the volume
+  $scope.$watch('podcastPlayer.playback.volume', function () { // Watch for changes, so we can set the volume
     $scope.podcastPlayer.sound.volume = $scope.podcastPlayer.playback.volume / 100;
   });
 
-  $scope.$watch('sound.canPlay', function () {
+  $scope.$watch('podcastPlayer.sound.canPlay', function () {
     // This gets called TWICE, even though it should only be called once. So we have a temp variable to make sure we only run this once
     if ($scope.podcastPlayer.alreadyCanPlayed) {
       return;

@@ -55,9 +55,8 @@ function ngRightClick($parse) {
   };
 }
 
-var zeus = angular.module('zeus', ['ui.router', 'ngAudio', 'ngAnimate', 'ngMaterial', 'ngContextMenu', 'cfp.hotkeys']).config(routeConfig).config(["hotkeysProvider", function (hotkeysProvider) {
+var zeus = angular.module('zeus', ['ui.router', 'ngAudio', 'ngAnimate', 'ngMaterial', 'ngContextMenu', 'ngSanitize', 'cfp.hotkeys']).config(routeConfig).config(["hotkeysProvider", function (hotkeysProvider) {
   /* @ngInject */
-
   hotkeysProvider.includeCheatSheet = false;
 }]);
 
@@ -524,9 +523,6 @@ function PlayerPageCtrl($scope, $rootScope, $state, $interval, $timeout, hotkeys
     }
   };
 
-  // Because ng-bind-html-template hates me.
-  angular.element(document.querySelector('[data-bind="episode.description"]')).html($scope.podcastPlayer.episode.description);
-
   $scope.podcastPlayer.sound.volume = $scope.podcastPlayer.playback.volume / 100; // Set initial volume
 
   // Register our hotkeys, j -> l. (Apparently old video managers use these keys?)
@@ -559,7 +555,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $interval, $timeout, hotkeys
     }
   });
 
-  $scope.$watch('playback.volume', function () {
+  $scope.$watch('podcastPlayer.playback.volume', function () {
     // Watch for changes, so we can set the volume
     $scope.podcastPlayer.sound.volume = $scope.podcastPlayer.playback.volume / 100;
   });

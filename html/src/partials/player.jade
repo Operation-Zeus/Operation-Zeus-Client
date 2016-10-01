@@ -7,7 +7,7 @@ article(layout="column" flex="90" flex-offset="5")
         md-card-title-text
           span(ng-bind="podcastPlayer.podcast.meta.title" ng-click="showNotes = false").md-headline.hover
           span(ng-bind="podcastPlayer.episode.title" ng-click="showNotes = false").md-subhead.hover
-          span(data-bind="podcastPlayer.episode.description" style="max-width: 500px").md-body-1        
+          span(ng-bind-html="podcastPlayer.episode.description" style="max-width: 500px").md-body-1        
 
   article(layout="row" layout-align="center center").no-select
     section(flex="10" flex-offset="5")
