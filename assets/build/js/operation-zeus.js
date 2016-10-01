@@ -4,7 +4,7 @@ routeConfig.$inject = ["$stateProvider", "$locationProvider"];
 runBlock.$inject = ["$window", "$rootScope", "$location", "$interval"];
 HomePageCtrl.$inject = ["$scope", "$rootScope", "$timeout", "$document", "$q", "$mdDialog"];
 MainCtrl.$inject = ["$scope", "$rootScope", "$window", "$location", "$document"];
-PlayerPageCtrl.$inject = ["$scope", "$rootScope", "$state", "$location", "$interval", "$timeout", "ngAudio"];
+PlayerPageCtrl.$inject = ["$scope", "$rootScope", "$state", "$location", "$interval", "$timeout", "hotkeys", "ngAudio"];
 SettingPageCtrl.$inject = ["$scope", "$rootScope"];
 PodcastPageCtrl.$inject = ["$scope", "$rootScope", "$state", "$location", "$timeout"];function PodcastPanelDirective() {
   return {
@@ -59,9 +59,15 @@ var zeus = angular.module('zeus', [
   'ngAudio',
   'ngAnimate',
   'ngMaterial',
-  'ngContextMenu'
+  'ngContextMenu',
+  'cfp.hotkeys'
 ])
-  .config(routeConfig);
+  .config(routeConfig)
+  .config(["hotkeysProvider", function (hotkeysProvider) {
+    /* @ngInject */
+
+    hotkeysProvider.includeCheatSheet = false;
+  }]);
 
 angular
   .module('zeus')
@@ -443,7 +449,7 @@ angular
   .controller('PlayerPageCtrl', PlayerPageCtrl);
 
 /* @ngInject */
-function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeout, ngAudio) {
+function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeout, hotkeys, ngAudio) {
   $scope.showNotes = false;
   $scope.alreadyCanPlayed = false;
   $scope.podcast = $rootScope.podcasts[$state.params.podcast];
@@ -456,9 +462,10 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
 
   var updateInterval = null;
 
-  ngAudio.unlock = undefined;
+  // Load sound
   $scope.sound = ngAudio.load($scope.episode.playbackURL);
 
+  // Declare our main playback object
   $scope.playback = {
     currentlyPlaying: false,
     hoverTime: '0:00:00',
@@ -478,6 +485,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
       $scope.playback.currentlyPlaying = true;
       $scope.sound.play();
 
+      // Every 30 seconds, update the current time
       updateInterval = $interval(function () {
         $scope.episode.currentTime = $scope.sound.currentTime;
         Zeus.updateSavedPodcast($scope.podcast);
@@ -542,10 +550,38 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
     }, 100);
   });
 
-  // Only update every second, that way we don't have a digest loop insanity by updating every millisecond.
-  $interval(function () {
-    $scope.playback.progress = $scope.sound.progress * 100;
-  }, 1000);
+  // Register our hotkeys, j -> l. (Apparently old video managers use these keys?)
+  hotkeys.bindTo($scope)
+    .add({
+      combo: 'j',
+      description: 'Rewinds the podcast 10 seconds',
+      callback: function ($event, hotkey) {
+        $event.preventDefault();
+
+        // Go backward 10 seconds
+        $scope.playback.replay10Seconds();
+      }
+    })
+    .add({
+      combo: 'k',
+      description: 'Pauses the currently playing podcast',
+      callback: function ($event, hotkey) {
+        $event.preventDefault();
+
+        // Toggle the podcast
+        $scope.playback.currentlyPlaying ? $scope.playback.pausePodcast() : $scope.playback.playPodcast();
+      }
+    })
+    .add({
+      combo: 'l',
+      description: 'Skips forward 30 seconds',
+      callback: function ($event, hotkey) {
+        $event.preventDefault();
+
+        // Go forward 30 seconds
+        $scope.playback.forward30Seconds();
+      }
+    });
 };
 
 function parseTime(input) {
