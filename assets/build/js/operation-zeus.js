@@ -542,10 +542,10 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
     }
 
     $scope.alreadyCanPlayed = true;
-    $scope.sound.currentTime = $scope.episode.currentTime || 0;  // Load saved time
 
     // For some reason, we get a "currently in digest" error if we click immediately. So wait partially.
     $timeout(function () {
+      $scope.sound.currentTime = $scope.episode.currentTime || 0;  // Load saved time
       document.querySelector('span[ng-click="playback.playPodcast()"]').click();
     }, 100);
   });
