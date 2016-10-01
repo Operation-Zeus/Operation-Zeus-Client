@@ -16,7 +16,7 @@ article(layout="column" flex="90" flex-offset="5" ng-controller="PlayerPageCtrl"
       span(ng-show="playback.showHoverPosition" ng-style="{ 'left': playback.tooltipLeft, 'top': playback.tooltipTop }").playback-tooltip
         span(ng-bind="playback.hoverTime")
         .playback-backdrop(ng-show="playback.showHoverPosition")
-      md-progress-linear(md-mode="determinate" value="{{ sound.progress * 100 }}" ng-click="playback.goToPosition($event)" ng-mousemove="playback.showPosition($event)" ng-mouseleave="playback.showHoverPosition = false;" style="height: 8px;").hover.no-select
+      md-progress-linear(md-mode="determinate" value="{{ (sound.progress * 100) }}" ng-click="playback.goToPosition($event)" ng-mousemove="playback.showPosition($event)" ng-mouseleave="playback.showHoverPosition = false;" style="height: 8px;").hover.no-select
     section(flex="10" flex-offset="5")
       span(ng-bind="sound.remaining | trackTime")
 
