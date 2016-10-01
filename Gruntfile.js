@@ -11,6 +11,17 @@ module.exports = function (grunt) {
         }
       }
     },
+    babel: {
+      options: {
+        sourceMap: false,
+        presets: ['es2015']
+      },
+      dist: {
+        files: {
+          'assets/build/js/operation-zeus.js' : 'assets/build/js/operation-zeus.js'
+        }
+      }
+    },
     uglify: {
       options: {
         mangle: true,
@@ -52,7 +63,7 @@ module.exports = function (grunt) {
     watch: {
       js: {
         files: ['assets/src/js/*.js'],
-        tasks: ['ngAnnotate', 'uglify']
+        tasks: ['ngAnnotate', 'babel', 'uglify']
       },
       css: {
         files: 'assets/src/css/*.less',
@@ -71,6 +82,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-ng-annotate');
+  grunt.loadNpmTasks('grunt-babel');
 
   // Default task(s).
   grunt.registerTask('default', ['watch']);
