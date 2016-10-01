@@ -1,26 +1,31 @@
-angular
-  .module('zeus')
-  .controller('PlayerPageCtrl', PlayerPageCtrl);
+/**
+ * This is a bit of a "sudo" page. It isn't actually a separate page / $scope, but for all intents and purposes, it is.
+ *
+ * With this page, we are actually extending the MainCtrl $scope to include all of this, that way this page is always active even if the state changes
+ * e.g: This is how we are letting people "listen" and "browse" at the same time.
+ */
+function PlayerPageCtrl($scope, $rootScope, $state, $interval, $timeout, hotkeys, ngAudio) {
+  if (!$scope.podcastPlayer.isADifferentEpisode) {
+    return; // All of this has already been declared
+  }
 
-/* @ngInject */
-function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeout, hotkeys, ngAudio) {
-  $scope.showNotes = false;
-  $scope.alreadyCanPlayed = false;
-  $scope.podcast = $rootScope.podcasts[$state.params.podcast];
-  $scope.episode = $rootScope.podcasts[$state.params.podcast].podcasts[$state.params.episode];
-  $scope.episode.playbackURL = `../../userdata/podcasts/${$scope.episode.hash}.mp3`;
+  $scope.podcastPlayer.hasAPodcastPlaying = true;
+  $scope.podcastPlayer.showNotes = false;
+  $scope.podcastPlayer.alreadyCanPlayed = false;
+  $scope.podcastPlayer.podcast = $rootScope.podcasts[$state.params.podcast];
+  $scope.podcastPlayer.episode = $rootScope.podcasts[$state.params.podcast].podcasts[$state.params.episode];
+  $scope.podcastPlayer.episode.playbackURL = `../../userdata/podcasts/${$scope.podcastPlayer.episode.hash}.mp3`;
+  $scope.podcastPlayer.updateInterval = null;
 
   $rootScope.nowPlaying.playing = true;
   $rootScope.nowPlaying.podcastId = $state.params.podcast;
   $rootScope.nowPlaying.episodeId = $state.params.episode;
 
-  var updateInterval = null;
-
   // Load sound
-  $scope.sound = ngAudio.load($scope.episode.playbackURL);
+  $scope.podcastPlayer.sound = ngAudio.load($scope.podcastPlayer.episode.playbackURL);
 
   // Declare our main playback object
-  $scope.playback = {
+  $scope.podcastPlayer.playback = {
     currentlyPlaying: false,
     hoverTime: '0:00:00',
     tooltipLeft: 0,
@@ -30,61 +35,61 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
     volume: $rootScope.settings.volume,
     lastEpisode: function () {
       location.assign(`#/play/${$state.params.podcast}/${(parseInt($state.params.episode) + 1)}`);
-      $scope.sound.pause();
+      $scope.podcastPlayer.sound.pause();
     },
     replay10Seconds: function () {
-      $scope.sound.currentTime -= 10;
+      $scope.podcastPlayer.sound.currentTime -= 10;
     },
     playPodcast: function () {
-      $scope.playback.currentlyPlaying = true;
-      $scope.sound.play();
+      $scope.podcastPlayer.playback.currentlyPlaying = true;
+      $scope.podcastPlayer.sound.play();
 
       // Every 30 seconds, update the current time
-      updateInterval = $interval(function () {
-        $scope.episode.currentTime = $scope.sound.currentTime;
-        Zeus.updateSavedPodcast($scope.podcast);
+      $scope.podcastPlayer.updateInterval = $interval(function () {
+        $scope.podcastPlayer.episode.currentTime = $scope.podcastPlayer.sound.currentTime;
+        Zeus.updateSavedPodcast($scope.podcastPlayer.podcast);
       }, 1000 * 30);
     },
     pausePodcast: function () {
-      $scope.playback.currentlyPlaying = false;
-      $scope.sound.pause();
+      $scope.podcastPlayer.playback.currentlyPlaying = false;
+      $scope.podcastPlayer.sound.pause();
 
-      if (angular.isDefined(updateInterval)) {
-        $interval.cancel(updateInterval);
-        updateInterval = undefined;
+      if (angular.isDefined($scope.podcastPlayer.updateInterval)) {
+        $interval.cancel($scope.podcastPlayer.updateInterval);
+        $scope.podcastPlayer.updateInterval = undefined;
       }
     },
     forward30Seconds: function () {
-      $scope.sound.currentTime += 30;
+      $scope.podcastPlayer.sound.currentTime += 30;
     },
     nextEpisode: function () {
       location.assign(`#/play/${$state.params.podcast}/${(parseInt($state.params.episode) -1)}`);
-      $scope.sound.pause();
+      $scope.podcastPlayer.sound.pause();
     },
     goToPosition: function ($event) {
       var totalWidth = document.getElementsByTagName('md-progress-linear')[0].clientWidth;
       var clickedAt = $event.offsetX;
 
       var percent = (clickedAt / totalWidth).round(4);
-      $scope.sound.currentTime = Math.round(($scope.sound.remaining + $scope.sound.currentTime) * percent);
+      $scope.podcastPlayer.sound.currentTime = Math.round(($scope.podcastPlayer.sound.remaining + $scope.podcastPlayer.sound.currentTime) * percent);
     },
     showPosition: function ($event) {
       var totalWidth = document.getElementsByTagName('md-progress-linear')[0].clientWidth;
       var clickedAt = $event.offsetX;
 
       var percent = (clickedAt / totalWidth).round(4);
-      $scope.playback.hoverTime = parseTime(Math.floor(($scope.sound.remaining + $scope.sound.currentTime) * percent));
+      $scope.podcastPlayer.playback.hoverTime = parseTime(Math.floor(($scope.podcastPlayer.sound.remaining + $scope.podcastPlayer.sound.currentTime) * percent));
 
-      $scope.playback.tooltipLeft = $event.pageX - 28 + 'px';
-      $scope.playback.tooltipTop = angular.element(document.querySelector('md-progress-linear')).prop('offsetTop') - 23 + 'px';
-      $scope.playback.showHoverPosition = true;
+      $scope.podcastPlayer.playback.tooltipLeft = $event.pageX - 28 + 'px';
+      $scope.podcastPlayer.playback.tooltipTop = angular.element(document.querySelector('md-progress-linear')).prop('offsetTop') - 23 + 'px';
+      $scope.podcastPlayer.playback.showHoverPosition = true;
     }
   };
 
   // Because ng-bind-html-template hates me.
-  angular.element(document.querySelector('[data-bind="episode.description"]')).html($scope.episode.description);
+  angular.element(document.querySelector('[data-bind="episode.description"]')).html($scope.podcastPlayer.episode.description);
 
-  $scope.sound.volume = $scope.playback.volume / 100; // Set initial volume
+  $scope.podcastPlayer.sound.volume = $scope.podcastPlayer.playback.volume / 100; // Set initial volume
 
   // Register our hotkeys, j -> l. (Apparently old video managers use these keys?)
   hotkeys.bindTo($scope)
@@ -95,7 +100,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
         $event.preventDefault();
 
         // Go backward 10 seconds
-        $scope.playback.replay10Seconds();
+        $scope.podcastPlayer.playback.replay10Seconds();
       }
     })
     .add({
@@ -105,7 +110,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
         $event.preventDefault();
 
         // Toggle the podcast
-        $scope.playback.currentlyPlaying ? $scope.playback.pausePodcast() : $scope.playback.playPodcast();
+        $scope.podcastPlayer.playback.currentlyPlaying ? $scope.podcastPlayer.playback.pausePodcast() : $scope.podcastPlayer.playback.playPodcast();
       }
     })
     .add({
@@ -115,32 +120,27 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
         $event.preventDefault();
 
         // Go forward 30 seconds
-        $scope.playback.forward30Seconds();
+        $scope.podcastPlayer.playback.forward30Seconds();
       }
     });
 
   $scope.$watch('playback.volume', function () { // Watch for changes, so we can set the volume
-    $scope.sound.volume = $scope.playback.volume / 100;
+    $scope.podcastPlayer.sound.volume = $scope.podcastPlayer.playback.volume / 100;
   });
 
   $scope.$watch('sound.canPlay', function () {
     // This gets called TWICE, even though it should only be called once. So we have a temp variable to make sure we only run this once
-    if ($scope.alreadyCanPlayed) {
+    if ($scope.podcastPlayer.alreadyCanPlayed) {
       return;
     }
 
-    $scope.alreadyCanPlayed = true;
+    $scope.podcastPlayer.alreadyCanPlayed = true;
 
     // For some reason, we get a "currently in digest" error if we click immediately. So wait partially.
     $timeout(function () {
-      $scope.sound.currentTime = $scope.episode.currentTime || 0;  // Load saved time
-      document.querySelector('span[ng-click="playback.playPodcast()"]').click();
+      $scope.podcastPlayer.sound.currentTime = $scope.podcastPlayer.episode.currentTime || 0;  // Load saved time
+      document.querySelector('span[ng-click="podcastPlayer.playback.playPodcast()"]').click();
     }, 100);
-  });
-
-  $rootScope.$on('$stateChangeStart', function ($event, toState, toParams, fromState, fromParams) {
-    $scope.playback.pausePodcast();
-    $scope.sound = undefined;
   });
 };
 
