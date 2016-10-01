@@ -1,3 +1,4 @@
+"use strict";
 
 ngRightClick.$inject = ["$parse"];
 routeConfig.$inject = ["$stateProvider", "$locationProvider"];
@@ -10,43 +11,44 @@ PodcastPageCtrl.$inject = ["$scope", "$rootScope", "$state", "$location", "$time
   return {
     restrict: 'E',
     templateUrl: 'partials/directives/podcast-panel.html'
-  }
+  };
 }
 
 function PreloaderDirective() {
   return {
     restrict: 'E',
     templateUrl: 'partials/directives/preloader.html'
-  }
+  };
 }
 
 function PreloaderSmallDirective() {
   return {
     restrict: 'E',
     templateUrl: 'partials/directives/preloader-small.html'
-  }
+  };
 }
 
 function PreloaderSmallBlueDirective() {
   return {
     restrict: 'E',
     templateUrl: 'partials/directives/preloader-small-blue.html'
-  }
+  };
 }
 
 function PodcastEpisodeDirective() {
   return {
     restrict: 'E',
     templateUrl: 'partials/directives/podcast-episode.html'
-  }
+  };
 }
 
 /* @ngInject */
-function ngRightClick($parse) { // Stack overflow is god
-  return function(scope, element, attrs) {
+function ngRightClick($parse) {
+  // Stack overflow is god
+  return function (scope, element, attrs) {
     var fn = $parse(attrs.ngRightClick);
-    element.bind('contextmenu', function(e) {
-      scope.$apply(function() {
+    element.bind('contextmenu', function (e) {
+      scope.$apply(function () {
         e.preventDefault();
         fn(scope, { $event: e });
       });
@@ -54,29 +56,13 @@ function ngRightClick($parse) { // Stack overflow is god
   };
 }
 
-var zeus = angular.module('zeus', [
-  'ui.router',
-  'ngAudio',
-  'ngAnimate',
-  'ngMaterial',
-  'ngContextMenu',
-  'cfp.hotkeys'
-])
-  .config(routeConfig)
-  .config(["hotkeysProvider", function (hotkeysProvider) {
-    /* @ngInject */
+var zeus = angular.module('zeus', ['ui.router', 'ngAudio', 'ngAnimate', 'ngMaterial', 'ngContextMenu', 'cfp.hotkeys']).config(routeConfig).config(["hotkeysProvider", function (hotkeysProvider) {
+  /* @ngInject */
 
-    hotkeysProvider.includeCheatSheet = false;
-  }]);
+  hotkeysProvider.includeCheatSheet = false;
+}]);
 
-angular
-  .module('zeus')
-  .directive('podcastPanel', PodcastPanelDirective)
-  .directive('preloader', PreloaderDirective)
-  .directive('preloaderSmall', PreloaderSmallDirective)
-  .directive('preloaderSmallBlue', PreloaderSmallBlueDirective)
-  .directive('podcastEpisode', PodcastEpisodeDirective)
-  .directive('ngRightClick', ngRightClick);
+angular.module('zeus').directive('podcastPanel', PodcastPanelDirective).directive('preloader', PreloaderDirective).directive('preloaderSmall', PreloaderSmallDirective).directive('preloaderSmallBlue', PreloaderSmallBlueDirective).directive('podcastEpisode', PodcastEpisodeDirective).directive('ngRightClick', ngRightClick);
 
 Number.prototype.round = function (p) {
   p = p || 10;
@@ -85,54 +71,47 @@ Number.prototype.round = function (p) {
 
 /* @ngInject*/
 function routeConfig($stateProvider, $locationProvider) {
-  $stateProvider
-    .state('home', {
-      url: '/',
-      views: {
-        'main': {
-          templateUrl: 'partials/home.html'
-        }
+  $stateProvider.state('home', {
+    url: '/',
+    views: {
+      'main': {
+        templateUrl: 'partials/home.html'
       }
-    })
-    .state('podcast', {
-      url: '/podcast/{id}',
-      views: {
-        'main': {
-          templateUrl: 'partials/podcast.html'
-        }
+    }
+  }).state('podcast', {
+    url: '/podcast/{id}',
+    views: {
+      'main': {
+        templateUrl: 'partials/podcast.html'
       }
-    })
-    .state('settings', {
-      url: '/settings',
-      views: {
-        'main': {
-          templateUrl: 'partials/settings.html'
-        }
+    }
+  }).state('settings', {
+    url: '/settings',
+    views: {
+      'main': {
+        templateUrl: 'partials/settings.html'
       }
-    })
-    .state('about', {
-      url: '/about',
-      views: {
-        'main': {
-          templateUrl: 'partials/about.html'
-        }
+    }
+  }).state('about', {
+    url: '/about',
+    views: {
+      'main': {
+        templateUrl: 'partials/about.html'
       }
-    })
-    .state('playPodcast', {
-      url: '/play/{podcast}/{episode}',
-      views: {
-        'main': {
-          templateUrl: 'partials/player.html'
-        }
+    }
+  }).state('playPodcast', {
+    url: '/play/{podcast}/{episode}',
+    views: {
+      'main': {
+        templateUrl: 'partials/player.html'
       }
-    });
+    }
+  });
 }
 
-const shell = require('electron').shell;
+var shell = require('electron').shell;
 
-angular
-  .module('zeus')
-  .run(runBlock);
+angular.module('zeus').run(runBlock);
 
 /* @ngInject */
 function runBlock($window, $rootScope, $location, $interval) {
@@ -143,11 +122,11 @@ function runBlock($window, $rootScope, $location, $interval) {
     if (data.darkTheme === undefined) {
       $rootScope.settings = {
         theme: 'light',
-        animations:  true,
-        analytics:  true,
+        animations: true,
+        analytics: true,
         voiceBoost: true,
         smartSpeed: true,
-        autoPlay:  true,
+        autoPlay: true,
         volume: 50,
         cacheImages: true,
         autoUpdate: true,
@@ -186,47 +165,41 @@ function runBlock($window, $rootScope, $location, $interval) {
   // }, 1000 * 60 * 15); // Update every 15 minutes
 }
 
-const remote = require('electron').remote;
-const Menu = remote.Menu;
-const MenuItem = remote.MenuItem;
+var remote = require('electron').remote;
+var Menu = remote.Menu;
+var MenuItem = remote.MenuItem;
 
 // const menu = new Menu();
-const template = [
-  {
-    label: 'Copy',
-    accelerator: 'CmdOrCtrl+C',
-    role: 'copy'
-  },
-  {
-    label: 'Reload',
-    accelerator: 'CmdOrCtrl+R',
-    click: function (item, focusedWindow) {
-      if (focusedWindow) {
-        focusedWindow.reload();
-      }
-    }
-  },
-  {
-    label: 'Toggle Dev. Tools',
-    accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-    click: function (item, focusedWindow) {
-      if (focusedWindow) {
-        focusedWindow.webContents.toggleDevTools();
-      }
+var template = [{
+  label: 'Copy',
+  accelerator: 'CmdOrCtrl+C',
+  role: 'copy'
+}, {
+  label: 'Reload',
+  accelerator: 'CmdOrCtrl+R',
+  click: function click(item, focusedWindow) {
+    if (focusedWindow) {
+      focusedWindow.reload();
     }
   }
-];
+}, {
+  label: 'Toggle Dev. Tools',
+  accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+  click: function click(item, focusedWindow) {
+    if (focusedWindow) {
+      focusedWindow.webContents.toggleDevTools();
+    }
+  }
+}];
 
-const menu = Menu.buildFromTemplate(template);
+var menu = Menu.buildFromTemplate(template);
 
 // $(document).on('contextmenu', function (e) {
 //   e.preventDefault();
 //   menu.popup(remote.getCurrentWindow());
 // });
 
-angular
-  .module('zeus')
-  .controller('HomePageCtrl', HomePageCtrl);
+angular.module('zeus').controller('HomePageCtrl', HomePageCtrl);
 
 /* @ngInject */
 function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
@@ -324,7 +297,7 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
   };
 
   // On every other click, remove that selection
-  $scope.handlePodcastUnselect = function($event) {
+  $scope.handlePodcastUnselect = function ($event) {
     // Keep the selection if using the context menu
     if (angular.element($event.srcElement).parent().attr('data-context-menu')) {
       return;
@@ -350,7 +323,6 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
    */
   $scope.openPodcastWebpage = function ($event) {
     var podcastId = getSelectedPodcastId();
-
   };
 
   /**
@@ -359,7 +331,6 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
    */
   $scope.downloadAllPodcasts = function ($event) {
     var podcastId = getSelectedPodcastId();
-
   };
 
   /**
@@ -369,12 +340,7 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
   $scope.deletePodcast = function ($event) {
     var podcastId = getSelectedPodcastId();
 
-    var confirm = $mdDialog.confirm()
-      .title('Remove podcast "' + $scope.podcasts[podcastId].meta.title +  '"?')
-      .ariaLabel('Remove podcast')
-      .targetEvent($event)
-      .ok('Remove')
-      .cancel('Cancel');
+    var confirm = $mdDialog.confirm().title('Remove podcast "' + $scope.podcasts[podcastId].meta.title + '"?').ariaLabel('Remove podcast').targetEvent($event).ok('Remove').cancel('Cancel');
 
     $mdDialog.show(confirm).then(function () {
       console.log('You chose to delete!');
@@ -409,9 +375,7 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
   }
 }
 
-angular
-  .module('zeus')
-  .controller('MainCtrl', MainCtrl);
+angular.module('zeus').controller('MainCtrl', MainCtrl);
 
 /* @ngInject */
 function MainCtrl($scope, $rootScope, $window, $location, $document) {
@@ -444,9 +408,7 @@ function MainCtrl($scope, $rootScope, $window, $location, $document) {
   });
 }
 
-angular
-  .module('zeus')
-  .controller('PlayerPageCtrl', PlayerPageCtrl);
+angular.module('zeus').controller('PlayerPageCtrl', PlayerPageCtrl);
 
 /* @ngInject */
 function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeout, hotkeys, ngAudio) {
@@ -454,7 +416,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
   $scope.alreadyCanPlayed = false;
   $scope.podcast = $rootScope.podcasts[$state.params.podcast];
   $scope.episode = $rootScope.podcasts[$state.params.podcast].podcasts[$state.params.episode];
-  $scope.episode.playbackURL = '../../userdata/podcasts/' + $scope.episode.hash + '.mp3';
+  $scope.episode.playbackURL = "../../userdata/podcasts/" + $scope.episode.hash + ".mp3";
 
   $rootScope.nowPlaying.playing = true;
   $rootScope.nowPlaying.podcastId = $state.params.podcast;
@@ -474,14 +436,14 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
     showHoverPosition: false,
     progress: 0,
     volume: $rootScope.settings.volume,
-    lastEpisode: function () {
-      $location.url('/play/' + $state.params.podcast + '/' + (parseInt($state.params.episode) + 1));
+    lastEpisode: function lastEpisode() {
+      location.assign("#/play/" + $state.params.podcast + "/" + (parseInt($state.params.episode) + 1));
       $scope.sound.pause();
     },
-    replay10Seconds: function () {
+    replay10Seconds: function replay10Seconds() {
       $scope.sound.currentTime -= 10;
     },
-    playPodcast: function () {
+    playPodcast: function playPodcast() {
       $scope.playback.currentlyPlaying = true;
       $scope.sound.play();
 
@@ -491,7 +453,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
         Zeus.updateSavedPodcast($scope.podcast);
       }, 1000 * 30);
     },
-    pausePodcast: function () {
+    pausePodcast: function pausePodcast() {
       $scope.playback.currentlyPlaying = false;
       $scope.sound.pause();
 
@@ -500,21 +462,21 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
         updateInterval = undefined;
       }
     },
-    forward30Seconds: function () {
+    forward30Seconds: function forward30Seconds() {
       $scope.sound.currentTime += 30;
     },
-    nextEpisode: function () {
-      $location.url('/play/' + $state.params.podcast + '/' + (parseInt($state.params.episode) - 1));
+    nextEpisode: function nextEpisode() {
+      location.assign("#/play/" + $state.params.podcast + "/" + (parseInt($state.params.episode) - 1));
       $scope.sound.pause();
     },
-    goToPosition: function ($event) {
+    goToPosition: function goToPosition($event) {
       var totalWidth = document.getElementsByTagName('md-progress-linear')[0].clientWidth;
       var clickedAt = $event.offsetX;
 
       var percent = (clickedAt / totalWidth).round(4);
       $scope.sound.currentTime = Math.round(($scope.sound.remaining + $scope.sound.currentTime) * percent);
     },
-    showPosition: function ($event) {
+    showPosition: function showPosition($event) {
       var totalWidth = document.getElementsByTagName('md-progress-linear')[0].clientWidth;
       var clickedAt = $event.offsetX;
 
@@ -531,7 +493,39 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
   angular.element(document.querySelector('[data-bind="episode.description"]')).html($scope.episode.description);
 
   $scope.sound.volume = $scope.playback.volume / 100; // Set initial volume
-  $scope.$watch('playback.volume', function () { // Watch for changes, so we can set the volume
+
+  // Register our hotkeys, j -> l. (Apparently old video managers use these keys?)
+  hotkeys.bindTo($scope).add({
+    combo: 'j',
+    description: 'Rewinds the podcast 10 seconds',
+    callback: function callback($event, hotkey) {
+      $event.preventDefault();
+
+      // Go backward 10 seconds
+      $scope.playback.replay10Seconds();
+    }
+  }).add({
+    combo: 'k',
+    description: 'Pauses the currently playing podcast',
+    callback: function callback($event, hotkey) {
+      $event.preventDefault();
+
+      // Toggle the podcast
+      $scope.playback.currentlyPlaying ? $scope.playback.pausePodcast() : $scope.playback.playPodcast();
+    }
+  }).add({
+    combo: 'l',
+    description: 'Skips forward 30 seconds',
+    callback: function callback($event, hotkey) {
+      $event.preventDefault();
+
+      // Go forward 30 seconds
+      $scope.playback.forward30Seconds();
+    }
+  });
+
+  $scope.$watch('playback.volume', function () {
+    // Watch for changes, so we can set the volume
     $scope.sound.volume = $scope.playback.volume / 100;
   });
 
@@ -545,43 +539,15 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
 
     // For some reason, we get a "currently in digest" error if we click immediately. So wait partially.
     $timeout(function () {
-      $scope.sound.currentTime = $scope.episode.currentTime || 0;  // Load saved time
+      $scope.sound.currentTime = $scope.episode.currentTime || 0; // Load saved time
       document.querySelector('span[ng-click="playback.playPodcast()"]').click();
     }, 100);
   });
 
-  // Register our hotkeys, j -> l. (Apparently old video managers use these keys?)
-  hotkeys.bindTo($scope)
-    .add({
-      combo: 'j',
-      description: 'Rewinds the podcast 10 seconds',
-      callback: function ($event, hotkey) {
-        $event.preventDefault();
-
-        // Go backward 10 seconds
-        $scope.playback.replay10Seconds();
-      }
-    })
-    .add({
-      combo: 'k',
-      description: 'Pauses the currently playing podcast',
-      callback: function ($event, hotkey) {
-        $event.preventDefault();
-
-        // Toggle the podcast
-        $scope.playback.currentlyPlaying ? $scope.playback.pausePodcast() : $scope.playback.playPodcast();
-      }
-    })
-    .add({
-      combo: 'l',
-      description: 'Skips forward 30 seconds',
-      callback: function ($event, hotkey) {
-        $event.preventDefault();
-
-        // Go forward 30 seconds
-        $scope.playback.forward30Seconds();
-      }
-    });
+  $rootScope.$on('$stateChangeStart', function ($event, toState, toParams, fromState, fromParams) {
+    $scope.playback.pausePodcast();
+    $scope.sound = undefined;
+  });
 };
 
 function parseTime(input) {
@@ -593,32 +559,32 @@ function parseTime(input) {
 
   if (totalSec > 3599) {
     hours = Math.floor(totalSec / 3600);
-    minutes = Math.floor((totalSec - (hours * 3600)) / 60);
-    seconds = (totalSec - ((minutes * 60) + (hours * 3600)));
+    minutes = Math.floor((totalSec - hours * 3600) / 60);
+    seconds = totalSec - (minutes * 60 + hours * 3600);
     if (hours.toString().length == 1) {
-      hours = '0' + (Math.floor(totalSec / 3600)).toString();
+      hours = '0' + Math.floor(totalSec / 3600).toString();
     }
     if (minutes.toString().length == 1) {
-      minutes = '0' + (Math.floor((totalSec - (hours * 3600)) / 60)).toString();
+      minutes = '0' + Math.floor((totalSec - hours * 3600) / 60).toString();
     }
     if (seconds.toString().length == 1) {
-      seconds = '0' + (totalSec - ((minutes * 60) + (hours * 3600))).toString();
+      seconds = '0' + (totalSec - (minutes * 60 + hours * 3600)).toString();
     }
     output = hours + ':' + minutes + ':' + seconds;
   } else if (totalSec > 59) {
     minutes = Math.floor(totalSec / 60);
-    seconds = totalSec - (minutes * 60);
+    seconds = totalSec - minutes * 60;
     if (minutes.toString().length == 1) {
-      minutes = '0' + (Math.floor(totalSec / 60)).toString();
+      minutes = '0' + Math.floor(totalSec / 60).toString();
     }
     if (seconds.toString().length == 1) {
-      seconds = '0' + (totalSec - (minutes * 60)).toString();
+      seconds = '0' + (totalSec - minutes * 60).toString();
     }
     output = minutes + ':' + seconds;
   } else {
     seconds = totalSec;
     if (seconds.toString().length == 1) {
-      seconds = '0' + (totalSec).toString();
+      seconds = '0' + totalSec.toString();
     }
 
     output = (totalSec < 10 ? '00:0' : '00:') + totalSec;
@@ -627,9 +593,7 @@ function parseTime(input) {
   return output;
 }
 
-angular
-  .module('zeus')
-  .controller('PodcastPageCtrl', PodcastPageCtrl);
+angular.module('zeus').controller('PodcastPageCtrl', PodcastPageCtrl);
 
 function PodcastPageCtrl($scope, $rootScope, $state, $location, $timeout) {
   $scope.podcast = $rootScope.podcasts[$state.params.id];
@@ -686,9 +650,7 @@ function PodcastPageCtrl($scope, $rootScope, $state, $location, $timeout) {
   };
 };
 
-angular
-  .module('zeus')
-  .controller('SettingPageCtrl', SettingPageCtrl);
+angular.module('zeus').controller('SettingPageCtrl', SettingPageCtrl);
 
 /* @ngInject */
 function SettingPageCtrl($scope, $rootScope) {

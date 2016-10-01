@@ -8,7 +8,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
   $scope.alreadyCanPlayed = false;
   $scope.podcast = $rootScope.podcasts[$state.params.podcast];
   $scope.episode = $rootScope.podcasts[$state.params.podcast].podcasts[$state.params.episode];
-  $scope.episode.playbackURL = '../../userdata/podcasts/' + $scope.episode.hash + '.mp3';
+  $scope.episode.playbackURL = `../../userdata/podcasts/${$scope.episode.hash}.mp3`;
 
   $rootScope.nowPlaying.playing = true;
   $rootScope.nowPlaying.podcastId = $state.params.podcast;
@@ -29,7 +29,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
     progress: 0,
     volume: $rootScope.settings.volume,
     lastEpisode: function () {
-      $location.url('/play/' + $state.params.podcast + '/' + (parseInt($state.params.episode) + 1));
+      location.assign(`#/play/${$state.params.podcast}/${(parseInt($state.params.episode) + 1)}`);
       $scope.sound.pause();
     },
     replay10Seconds: function () {
@@ -58,7 +58,7 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
       $scope.sound.currentTime += 30;
     },
     nextEpisode: function () {
-      $location.url('/play/' + $state.params.podcast + '/' + (parseInt($state.params.episode) - 1));
+      location.assign(`#/play/${$state.params.podcast}/${(parseInt($state.params.episode) -1)}`);
       $scope.sound.pause();
     },
     goToPosition: function ($event) {
@@ -85,24 +85,6 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
   angular.element(document.querySelector('[data-bind="episode.description"]')).html($scope.episode.description);
 
   $scope.sound.volume = $scope.playback.volume / 100; // Set initial volume
-  $scope.$watch('playback.volume', function () { // Watch for changes, so we can set the volume
-    $scope.sound.volume = $scope.playback.volume / 100;
-  });
-
-  $scope.$watch('sound.canPlay', function () {
-    // This gets called TWICE, even though it should only be called once. So we have a temp variable to make sure we only run this once
-    if ($scope.alreadyCanPlayed) {
-      return;
-    }
-
-    $scope.alreadyCanPlayed = true;
-
-    // For some reason, we get a "currently in digest" error if we click immediately. So wait partially.
-    $timeout(function () {
-      $scope.sound.currentTime = $scope.episode.currentTime || 0;  // Load saved time
-      document.querySelector('span[ng-click="playback.playPodcast()"]').click();
-    }, 100);
-  });
 
   // Register our hotkeys, j -> l. (Apparently old video managers use these keys?)
   hotkeys.bindTo($scope)
@@ -136,6 +118,30 @@ function PlayerPageCtrl($scope, $rootScope, $state, $location, $interval, $timeo
         $scope.playback.forward30Seconds();
       }
     });
+
+  $scope.$watch('playback.volume', function () { // Watch for changes, so we can set the volume
+    $scope.sound.volume = $scope.playback.volume / 100;
+  });
+
+  $scope.$watch('sound.canPlay', function () {
+    // This gets called TWICE, even though it should only be called once. So we have a temp variable to make sure we only run this once
+    if ($scope.alreadyCanPlayed) {
+      return;
+    }
+
+    $scope.alreadyCanPlayed = true;
+
+    // For some reason, we get a "currently in digest" error if we click immediately. So wait partially.
+    $timeout(function () {
+      $scope.sound.currentTime = $scope.episode.currentTime || 0;  // Load saved time
+      document.querySelector('span[ng-click="playback.playPodcast()"]').click();
+    }, 100);
+  });
+
+  $rootScope.$on('$stateChangeStart', function ($event, toState, toParams, fromState, fromParams) {
+    $scope.playback.pausePodcast();
+    $scope.sound = undefined;
+  });
 };
 
 function parseTime(input) {
