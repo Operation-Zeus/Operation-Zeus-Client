@@ -7,27 +7,27 @@ html(lang="en" ng-app="zeus" ng-strict-di)
   body(ng-controller="MainCtrl" ng-class="{ 'dark-theme': $root.settings.darkTheme }")
     include includes/header
 
-    md-content(style="height: 91.5%;")
-      main(flex style="min-height: 100%")
-        span(ng-show="$root.nowPlaying.playing && !podcastPlayer.onPodcastPage" style="position: absolute; z-index: 5; right: 1px;")
-          md-button(ui-sref="playPodcast({ podcast: $root.nowPlaying.podcastId, episode: $root.nowPlaying.episodeId })" aria-label="Now playing").md-icon-button
-            md-icon(md-icon-library="material-icons") chevron_right
-            md-tooltip(md-direction="left") Now playing
-        span(ng-show="$root.nowPlaying.playing && podcastPlayer.onPodcastPage" style="position: absolute; z-index: 5; left: 1px;")
-          md-button(ui-sref="home" aria-label="Home").md-icon-button
-            md-icon(md-icon-library="material-icons") chevron_left
-            md-tooltip(md-direction="right") Home
+    //- md-content(style="height: 91.5%;")
+    main(flex style="min-height: 91.5%")
+      span(ng-show="$root.nowPlaying.playing && !podcastPlayer.onPodcastPage" style="position: absolute; z-index: 5; right: 1px;")
+        md-button(ui-sref="playPodcast({ podcast: $root.nowPlaying.podcastId, episode: $root.nowPlaying.episodeId })" aria-label="Now playing").md-icon-button
+          md-icon(md-icon-library="material-icons") chevron_right
+          md-tooltip(md-direction="left") Now playing
+      span(ng-show="$root.nowPlaying.playing && podcastPlayer.onPodcastPage" style="position: absolute; z-index: 5; left: 1px;")
+        md-button(ui-sref="home" aria-label="Home").md-icon-button
+          md-icon(md-icon-library="material-icons") chevron_left
+          md-tooltip(md-direction="right") Home
 
-        md-content(ng-if="$root.fullyLoaded"
-          ng-class="{ 'slide-left': $root.settings.animations }"
-          style="min-height: 512px"
-          flex
-          ui-view="main")
-          
-        md-content(ng-if="$root.fullyLoaded"
-          ng-class="{ 'slide-left': $root.settings.animations }"
-          flex
-          ui-view="player")
+      md-content(ng-if="$root.fullyLoaded"
+        ng-class="{ 'slide-left': $root.settings.animations }"
+        style="min-height: 512px"
+        flex
+        ui-view="main")
+        
+      md-content(ng-if="$root.fullyLoaded"
+        ng-class="{ 'slide-left': $root.settings.animations }"
+        flex
+        ui-view="player")
           
     article(ng-hide="$root.fullyLoaded")#splash-screen
       h1 Loading...
