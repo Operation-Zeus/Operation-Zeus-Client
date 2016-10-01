@@ -3,9 +3,15 @@ var zeus = angular.module('zeus', [
   'ngAudio',
   'ngAnimate',
   'ngMaterial',
-  'ngContextMenu'
+  'ngContextMenu',
+  'cfp.hotkeys'
 ])
-  .config(routeConfig);
+  .config(routeConfig)
+  .config(function (hotkeysProvider) {
+    /* @ngInject */
+
+    hotkeysProvider.includeCheatSheet = false;
+  });
 
 angular
   .module('zeus')
