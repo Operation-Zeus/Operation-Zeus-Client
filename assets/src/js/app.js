@@ -4,12 +4,12 @@ var zeus = angular.module('zeus', [
   'ngAnimate',
   'ngMaterial',
   'ngContextMenu',
+  'ngSanitize',
   'cfp.hotkeys'
 ])
   .config(routeConfig)
   .config(function (hotkeysProvider) {
     /* @ngInject */
-
     hotkeysProvider.includeCheatSheet = false;
   });
 
