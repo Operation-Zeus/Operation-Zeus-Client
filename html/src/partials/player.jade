@@ -11,7 +11,7 @@ article(layout="column" flex="90" flex-offset="5")
 
   article(layout="row" layout-align="center center").no-select
     section(flex="10" flex-offset="5")
-      span(ng-bind="podcastPlayer.sound.currentTime | trackTime")
+      span(ng-bind="podcastPlayer.sound.currentTime | trackTime" style="margin-left: -1em;")
     section(flex="90").no-select
       span(ng-show="podcastPlayer.playback.showHoverPosition" ng-style="{ 'left': podcastPlayer.playback.tooltipLeft, 'top': podcastPlayer.playback.tooltipTop }").playback-tooltip
         span(ng-bind="podcastPlayer.playback.hoverTime")

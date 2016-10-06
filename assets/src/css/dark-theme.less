@@ -21,6 +21,11 @@ body.dark-theme {
   // Main general colors
   color: @text-color-medium;
 
+  // Icons
+  md-icon {
+    color: @text-color-medium;
+  }
+
   md-content {
     background-color: @sheet-color;
     color: @text-color-medium;
@@ -41,6 +46,10 @@ body.dark-theme {
 
   .md-body-2 {
     color: @text-color-hard;
+  }
+
+  .md-headline {
+    color: @text-color-hard !important;
   }
 
   .md-subhead {
@@ -74,14 +83,18 @@ body.dark-theme {
   md-toolbar {
     background-color: @sheet-color;
 
-    .md-button {
-      color: @text-color-medium;
+    .md-button, .md-button.md-icon-button > md-icon {
+      color: lighten(@text-color-hard, 10%) !important;
     }
   }
 
   md-progress-linear {
     .md-bar {
-      background-color: @secondary-color;
+      background-color: darken(@secondary-color, 10%);
+    }
+
+    .md-container {
+      background-color: @main-color;
     }
   }
 
@@ -100,24 +113,6 @@ body.dark-theme {
 
   md-tabs .md-tab:not(.md-active) {
     color: @text-color-medium;
-  }
-
-  table.md-table {
-    color: @text-color-hard;
-
-    td, th, th.md-active, th.md-active md-icon {
-      color: @text-color-hard;
-    }
-
-    &.md-row-select {
-      tbody.md-body {
-        > tr.md-row:not([disabled]):hover,
-        > tr.md-selected {
-          // md-data-table marks this as important also...
-          background-color: @hover-color !important;
-        }
-      }
-    }
   }
 
   md-input-container {
@@ -197,6 +192,21 @@ body.dark-theme {
   md-radio-button:not(.md-checked) {
     .md-off {
       border-color: @text-color-light;
+    }
+  }
+
+  md-slider {
+    .md-track {
+      background-color: @main-color;
+    }
+
+    .md-track-fill {
+      background-color: darken(@secondary-color, 10%) !important;
+    }
+
+    .md-thumb:after {
+      border-color: darken(@secondary-color, 10%);
+      background-color: darken(@secondary-color, 10%);
     }
   }
 }
