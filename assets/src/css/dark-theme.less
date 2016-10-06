@@ -47,6 +47,16 @@ body.dark-theme {
     color: @text-color-light !important;
   }
 
+  .md-list-item-text {
+    h3 {
+      color: @text-color-hard !important;
+    }
+
+    p {
+      color: @text-color-medium !important;
+    }
+  }
+
   a {
     color: @secondary-color;
   }
@@ -124,6 +134,7 @@ body.dark-theme {
     }
   }
 
+  // Buttons
   .md-button {
     color: @text-color-medium;
 
@@ -140,11 +151,19 @@ body.dark-theme {
     background-color: @sheet-color;
 
     &.md-primary {
-      background-color: @main-color;
+      background-color: darken(@main-color, 50%);
+
+      &:hover {
+        background-color: darken(@main-color, 30%);
+      }
     }
 
     &.md-warn {
       background-color: @warn-color;
+
+      &:hover {
+        background-color: lighten(@warn-color, 20%);
+      }
     }
 
     &.md-focused, &:hover {
