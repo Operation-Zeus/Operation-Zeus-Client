@@ -4,7 +4,7 @@ html(lang="en" ng-app="zeus" ng-strict-di)
     meta(charset="utf-8")
     title Operation Zeus
     link(rel="stylesheet" href="../../assets/build/css/master.min.css" media="screen" title="no title" charset="utf-8")
-  body(ng-controller="MainCtrl" ng-class="{ 'dark-theme': $root.settings.darkTheme }")
+  body(ng-controller="MainCtrl" ng-class="{ 'dark-theme': $root.settings.theme == 'dark' }")
     include includes/header
 
     //- md-content(style="height: 91.5%;")
