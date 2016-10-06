@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 
-gulp.task('default', function () {
+gulp.task('concat', function () {
   return gulp.src(['assets/src/js/vendor/angular.js', 'assets/src/js/vendor/*.js'])
     .pipe(concat('vendor.min.js'))
     .pipe(gulp.dest('assets/build/js'));
@@ -13,3 +13,5 @@ gulp.task('compress', function () {
   .pipe(uglify())
   .pipe(gulp.dest('assets/build/js/'));
 });
+
+gulp.task('default', ['concat', 'compress']);
