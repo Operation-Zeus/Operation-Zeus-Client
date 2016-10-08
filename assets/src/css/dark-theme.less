@@ -31,6 +31,32 @@ body.dark-theme {
     color: @text-color-medium;
   }
 
+  md-dialog {
+    background-color: @sheet-color;
+    color: @text-color-medium;
+
+    md-input-container:not(.md-input-invalid).md-input-has-value label {
+      color: @text-color-medium;
+    }
+
+    md-autocomplete {
+      background-color: lighten(@sheet-color, 5%);
+
+      input {
+        color: darken(@text-color-medium, 10%);
+      }
+    }
+  }
+
+  md-virtual-repeat-container.md-autocomplete-suggestions-container {
+    background-color: lighten(@sheet-color, 5%);
+    color: darken(@text-color-medium, 10%);
+
+    li:hover {
+      background-color: lighten(@hover-color, 10%);
+    }
+  }
+
   main, main > md-content {
     background: @body-color !important;
   }
