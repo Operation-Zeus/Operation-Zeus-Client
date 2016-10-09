@@ -302,6 +302,8 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
    */
   $scope.openPodcastWebpage = function ($event) {
     var podcastId = getSelectedPodcastId();
+
+    shell.openExternal($scope.podcasts[podcastId].meta.link);
   };
 
   /**
@@ -342,6 +344,7 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
 
     return podcastId;
   }
+
   function loadPodcastSearchResults(podcastName, deferred) {
     Zeus.searchPodcastOnITunes(podcastName, function (error, result) {
       if (error) {
