@@ -9,17 +9,16 @@
   "devDependencies": {
     "babel-preset-es2015": "^6.16.0",
     "electron-prebuilt": "^1.3.1",
-    "grunt": "^1.0.1",
-    "grunt-babel": "^6.0.0",
-    "grunt-contrib-jade": "^1.0.0",
-    "grunt-contrib-less": "^1.3.0",
-    "grunt-contrib-uglify": "^2.0.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-ng-annotate": "^2.0.2",
     "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
     "gulp-concat": "^2.6.0",
+    "gulp-less": "^3.1.0",
+    "gulp-jade": "^1.1.0",
+    "gulp-ng-annotate": "^2.0.0",
     "gulp-uglify": "^2.0.0",
-    "less-plugin-clean-css": "^1.5.1"
+    "gulp-watch": "^4.3.10",
+    "less-plugin-clean-css": "^1.5.1",
+    "run-sequence": "^1.2.2"
   },
   "dependencies": {
     "feedparser": "^1.1.4",
