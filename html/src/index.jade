@@ -7,7 +7,6 @@ html(lang="en" ng-app="zeus" ng-strict-di)
   body(ng-controller="MainCtrl" ng-class="{ 'dark-theme': $root.settings.theme == 'dark', 'twilight-theme': $root.settings.theme == 'twilight' }")
     include includes/header
 
-    //- md-content(style="height: 91.5%;")
     main(flex style="min-height: 91.5%")
       span(ng-show="$root.nowPlaying.playing && !podcastPlayer.onPodcastPage" style="position: absolute; z-index: 5; right: 1px;")
         md-button(ui-sref="playPodcast({ podcast: $root.nowPlaying.podcastId, episode: $root.nowPlaying.episodeId })" aria-label="Now playing").md-icon-button

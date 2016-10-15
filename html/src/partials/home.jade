@@ -16,41 +16,6 @@ article(ng-controller="HomePageCtrl"
   md-button(aria-label="Add Podcast" ng-click="openPodcastModal($event)" style="position: absolute; bottom: 40px; right: 40px;").md-fab.md-primary
     md-icon(md-font-library="material-icons") add
     md-tooltip Add Podcast
-
-  div(style="display: none;")
-    div.md-dialog-container#addPodcastModal
-      md-dialog(layout-padding)
-        form(ng-model="podcastInfo" ng-submit="usingAutocomplete ? $event.preventDefault() : addNewPodcast(podcastInfo)")
-          md-input-container(style="margin-bottom: 0px;")
-            label RSS Feed URL
-            input(type="text" ng-required="true" ng-model="podcastInfo.url")
-        
-          p(align="center" style="margin-bottom: 8px; margin-top: -10px").md-body-2 
-            | - OR -
-        
-          // Start autocomplete
-          // md-search-text-change="searchForPodcast(podcastName)"
-          md-autocomplete(md-search-text="podcastName"
-            md-selected-item="podcast.collectionCensoredName"
-            md-selected-item-change="autocompleteSelectItem(podcast)"
-            md-items="podcast in searchForPodcast(podcastName)"
-            md-item-text="podcast.collectionCensoredName"
-            md-min-length="5"
-            md-menu-class="podcast-autocomplete-custom-template"
-            placeholder="Search for a podcast...")
-            
-            md-item-template
-              span.item-title
-                img(ng-src="{{ podcast.artworkUrl30 }}")
-                span(ng-bind="podcast.collectionCensoredName").md-body-1
-            md-not-found
-              | No states matching "<span ng-bind="podcastName"></span>" where found.
-          // End autocomplete
-          
-          div(layout="row")
-            md-button(aria-label="Close" ng-click="closePodcastModal()") Cancel
-            md-button(type="submit" aria-label="Add").good Add
-          div(layout="row" style="margin-bottom: 2px;" layout-align="center center")
-            preloader-small(ng-show="loadingRSSFeed")
-            span(ng-show="podcastInfo.hasError").danger
-              span(ng-bind="podcastInfo.errorMessage")
+  
+  include modals/add-podcast-modal
+  include modals/share-podcast-modal
