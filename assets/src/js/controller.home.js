@@ -13,10 +13,10 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
     $mdDialog.hide();
   };
 
-  $scope.openPodcastModal = function (e) {
+  $scope.openPodcastModal = function ($event) {
     $mdDialog.show({
       parent: angular.element(document.body),
-      targetEvent: e,
+      targetEvent: $event,
       clickOutsideToClose: true,
       contentElement: '#addPodcastModal'
     });
@@ -116,6 +116,13 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
    */
   $scope.sharePodcast = function ($event) {
     var podcastId = getSelectedPodcastId();
+
+    $mdDialog.show({
+      parent: angular.element(document.body),
+      targetEvent: $event,
+      clickOutsideToClose: true,
+      contentElement: '#sharePodcastModal'
+    });
   };
 
   /**

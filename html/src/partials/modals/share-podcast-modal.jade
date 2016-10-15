@@ -1,0 +1,12 @@
+div(style="display: none;")
+  div.md-dialog-container#sharePodcastModal
+    md-dialog(layout-padding)
+      md-dialog-content
+        h3.md-headline Share Podcast
+        
+        section(layout="row" layout-align="center center")
+          md-button.md-raised Facebook
+          md-button.md-raised Twitter
+      
+      md-dialog-actions
+        md-button(aria-label="Close" ng-click="closePodcastModal()").md-primary Cancel
