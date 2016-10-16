@@ -5,9 +5,12 @@
 @warn-color: #D50000;
 @body-background: @grey-dark;
 @header-background: @grey-dark;
+
 @text-color-hard: @grey-light;
 @text-color-medium: @grey-medium;
 @text-color-light: @grey-hard;
+@text-color-accent: @grey-accent;
+
 @shadow-multiplier: 1.7;
 @toast-background: #323232;
 @toast-error-background:  #f77;
@@ -175,6 +178,10 @@ body.dark-theme {
 
     &.md-action {
       color: white;
+    }
+
+    &.md-accent {
+      color: @text-color-accent;
     }
   }
 
