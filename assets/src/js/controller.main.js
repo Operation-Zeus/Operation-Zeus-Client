@@ -3,21 +3,16 @@ angular
   .controller('MainCtrl', MainCtrl);
 
 /* @ngInject */
-function MainCtrl($scope, $rootScope, $window, $state, $document, $interval, $timeout, hotkeys, ngAudio) {
+function MainCtrl($scope, $rootScope, $window, $state, $document, $interval, $timeout, $mdToast, hotkeys, ngAudio) {
   $scope.podcastPlayer = {};
   $scope.podcastPlayer.isADifferentEpisode = true;
   $scope.podcastPlayer.onPodcastPage = false;
   $scope.podcastPlayer.podcast = {};
   $scope.podcastPlayer.episode = {};
 
-  $rootScope.$on('$routeChangeError', function (event, curr, prev, rejection) {
-    if (!prev) {
-      $location.url('/');
-      return;
-    }
-
-    $window.history.back();
-  });
+  $scope.closeToast = function () {
+    $mdToast.hide();
+  };
 
   $scope.hideFrame = function () {
     Main.hideWindow();
@@ -40,6 +35,8 @@ function MainCtrl($scope, $rootScope, $window, $state, $document, $interval, $ti
 
   // Hook the $state changing, and if it's our podcast, lets simulate a new page
   $rootScope.$on('$stateChangeSuccess', function ($event, toState, toParams, fromState, fromParams) {
+    $scope.closeToast();
+
     if (toState.name == 'playPodcast') {
       $scope.podcastPlayer.onPodcastPage = true;
       $scope.podcastPlayer.isADifferentEpisode = false;
