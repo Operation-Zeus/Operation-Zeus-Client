@@ -110,17 +110,6 @@ Zeus.loadSavedPodcasts = function(callback) {
 
   Zeus.podcasts = data;
   return callback(data);
-//   fs.readFile('userdata/podcasts.json', function (err, data) {
-//     if (err) {
-//       api.log('error', 'No podcast file found');
-//       Zeus.podcasts = [];
-//       return callback([]);
-//     }
-//
-//     data = JSON.parse(data);
-//     Zeus.podcasts = data;
-//     return callback(data);
-//   });
 };
 
 /**
@@ -143,10 +132,6 @@ Zeus.loadSettings = function(callback) {
  * @param {FUNCTION} callback
  */
 Zeus.saveSettings = function(data, callback) {
-
-  // fs.writeFileSync(`userdata/settings.json`, JSON.stringify(data));
-  // api.log('file', 'Saved user settings');
-
   fs.writeFile(`userdata/settings.json`, JSON.stringify(data), (err) => {
     if (err) {
       throw err;
@@ -198,19 +183,23 @@ Zeus.savePodcast = function(podcast, newPodcast, id) {
 
 /**
  * Removes a podcast from our array / file
- * @param {PODCAST} podcast
+ * @param {INT} podcastId
  */
-Zeus.removePodcast = function(podcast) {
-  Zeus.podcasts.splice(podcast.id, 1);
+Zeus.removePodcast = function(podcastId) {
+  Zeus.podcasts.splice(podcastId, 1);
+
+  // Fix our ids
+  for (var i = 0; i < Zeus.podcasts.length; i++) {
+    Zeus.podcasts[i].id = i;
+  }
+
+  Zeus.updatePodcastFile();
 };
 
 /**
  * Writes the podcasts file to JSON
  */
 Zeus.updatePodcastFile = function () {
-  // fs.writeFileSync(`userdata/podcasts.json`, JSON.stringify(Zeus.podcasts));
-  // api.log('file', `Wrote podcast data to podcasts.json, ${Zeus.podcasts.length}`);
-
   fs.writeFile(`userdata/podcasts.json`, JSON.stringify(Zeus.podcasts), (err) => {
     if (err) {
       throw error;

@@ -3,7 +3,7 @@ angular
   .controller('HomePageCtrl', HomePageCtrl);
 
 /* @ngInject */
-function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
+function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog, $mdToast) {
   var podcastAutocompleteTimer;
   $scope.podcasts = $rootScope.podcasts;
   $scope.podcastInfo = {};
@@ -152,14 +152,35 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog) {
     var podcastId = getSelectedPodcastId();
 
     var confirm = $mdDialog.confirm()
-      .title('Remove podcast "' + $scope.podcasts[podcastId].meta.title +  '"?')
+      .title(`Remove podcast podcast "${$scope.podcasts[podcastId].meta.title}"?`)
       .ariaLabel('Remove podcast')
       .targetEvent($event)
       .ok('Remove')
       .cancel('Cancel');
 
     $mdDialog.show(confirm).then(function () {
+      var title = $scope.podcasts[podcastId].meta.title;
       console.log('You chose to delete!');
+
+      Zeus.removePodcast(podcastId);
+
+      console.log('Showing toast!');
+
+      $mdToast.show({
+        hideDelay: 3000,
+        position: 'bottom left',
+        template: `
+        <md-toast style="max-width: 500px; bottom: 10px; left: 10px;">
+          <span class="md-toast-text">Deleted podcast "${title}"</span>
+          <md-button class="md-accent" ng-click="undoLastDelete($event)">
+            Undo
+          </md-button>
+          <md-button ng-click="closeToast($event)">
+            Close
+          </md-button>
+        </md-toast>
+        `
+      });
     });
   };
 
