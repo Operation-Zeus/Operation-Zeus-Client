@@ -3,6 +3,7 @@ const fs = require('fs');
 const FeedParser = require('feedparser');
 const moment = require('moment');
 const Electron = require('electron');
+const _ = require('lodash');
 
 var Main = Electron.remote.require('./main.js');
 var api = Electron.remote.require('./api.js');
@@ -37,7 +38,7 @@ Zeus.searchPodcastOnITunes = function (input, callback) {
  * @param {INT} id
  * @param {FUNCTION} callback
  */
-Zeus.fetchPodcastRSS = function(url, newPodcast, id, callback) {
+Zeus.fetchPodcastRSS = function(url, callback) {
   var req = request(url);
   var feedparser = new FeedParser();
   var podcast = {};
@@ -72,6 +73,8 @@ Zeus.fetchPodcastRSS = function(url, newPodcast, id, callback) {
     var item;
 
     podcast.meta = meta;
+
+    // Keep reading while there is more to read
     while (item = stream.read()) {
       podcast.podcasts.push(item);
     }
@@ -82,9 +85,7 @@ Zeus.fetchPodcastRSS = function(url, newPodcast, id, callback) {
   });
 
   feedparser.on('end', () => {
-    podcast.loading = false;
-    Zeus.savePodcast(podcast, newPodcast, id);
-    callback(null, podcast, id);
+    callback(null, podcast);
   });
 };
 
@@ -148,37 +149,58 @@ Zeus.saveSettings = function(data, callback) {
  * @param {BOOLEAN} newPodcast
  * @param {INT} id
  */
-Zeus.savePodcast = function(podcast, newPodcast, id) {
-  for (var i = 0; i < podcast.podcasts.length; i++) {
-    podcast.podcasts[i].pubDateParsed = moment(podcast.podcasts[i].pubDate).format('MMMM DD, YYYY');
-    podcast.podcasts[i].id = i;
+Zeus.savePodcast = function(podcast) {
+  Zeus.beautifyEpisodes(podcast);
 
-    if (podcast.podcasts[i]['itunes:duration']['#'].includes(':')) {
-      podcast.podcasts[i].podcastLengthParsed = podcast.podcasts[i]['itunes:duration']['#'];
-      continue;
-    }
-
-    podcast.podcasts[i].podcastLength = api.formatSecondsToHoursMinutesSeconds(podcast.podcasts[i]['itunes:duration']['#']);
-    podcast.podcasts[i].podcastLengthParsed = api.formatSecondsToWords(podcast.podcasts[i]['itunes:duration']['#']);
-    podcast.podcasts[i].currentTime = 0;
-    podcast.podcasts[i].watched = false;
-  }
-
-  if (newPodcast) {
-    Zeus.podcasts.push(podcast);
-    podcast.id = Zeus.podcasts.indexOf(podcast);
-  } else {
-    podcast.id = id;
-    Zeus.podcasts[id] = podcast;
-  }
-
-  podcast.imageURL = Zeus.settings.cacheImages ? `../../userdata/cached/${podcast.id}` : podcast.meta['itunes:image']['@'].href;
-
-  Zeus.updatePodcastFile();
+  Zeus.podcasts.push(podcast);
+  podcast.id = Zeus.podcasts.indexOf(podcast);
+  podcast.imageURL = podcast.meta['itunes:image']['@'].href;
 
   if (Zeus.settings.cacheImages) {
+    podcast.imageURL = `../../userdata/cached/${podcast.id}`;
     Zeus.updateCachedImage(podcast);
   }
+
+  Zeus.updatePodcastFile();
+};
+
+/**
+ * Adds a podcast to our selection
+ * @param {STRING} url - The RSS feed URL
+ * @param {FUNCTION} callback
+ */
+Zeus.addPodcast = function (url, callback) {
+  Zeus.fetchPodcastRSS(url, (error, podcast) => {
+    if (error) {
+      callback(error, null);
+      return;
+    }
+
+    podcast.loading = false;
+    Zeus.savePodcast(podcast);
+    callback(null, podcast);
+  });
+};
+
+/**
+ * Fetches podcast from RSS url, updates changes
+ * @param {PODCAST} podcast - The podcast we are checking
+ */
+Zeus.updatePodcast = function (podcast, callback) {
+  podcast.loading = true;
+
+  Zeus.fetchPodcastRSS(podcast.rssUrl, (error, newPodcastInfo) => {
+    if (error) {
+      callback(error, null);
+      return;
+    }
+
+    // Ya, ya, I know. Piggy-backing off of lodash because I can. (And hell, it looks cooler... :D)
+    _.mergePodcastInformation(podcast, newPodcastInfo);
+    Zeus.beautifyEpisodes(podcast);
+
+    callback(null, podcast);
+  });
 };
 
 /**
@@ -320,4 +342,45 @@ Zeus.deleteEpisode = function (podcast, callback) {
   //
   //   callback(success);
   // });
+};
+
+/**
+ * Goes through each podcast episode, and makes the time readable, assigns id to index, etc.
+ * @param {PODCAST} podcast
+ */
+Zeus.beautifyEpisodes = function (podcast) {
+  for (var i = 0; i < podcast.podcasts.length; i++) {
+    podcast.podcasts[i].pubDateParsed = moment(podcast.podcasts[i].pubDate).format('MMMM DD, YYYY');
+    podcast.podcasts[i].id = i;
+
+    if (podcast.podcasts[i]['itunes:duration']['#'].includes(':')) {
+      podcast.podcasts[i].podcastLengthParsed = podcast.podcasts[i]['itunes:duration']['#'];
+      continue;
+    }
+
+    podcast.podcasts[i].podcastLength = api.formatSecondsToHoursMinutesSeconds(podcast.podcasts[i]['itunes:duration']['#']);
+    podcast.podcasts[i].podcastLengthParsed = api.formatSecondsToWords(podcast.podcasts[i]['itunes:duration']['#']);
+    podcast.podcasts[i].currentTime = 0;
+    podcast.podcasts[i].watched = false;
+  }
+};
+
+/**
+ * Our own "version" of a deep extend. Cause we can :D
+ * @description This primarily only updates the episodes -- adding new while keeping the old.
+ * @param {PODCAST} oldPodcast - The target
+ * @param {PODCAST} newPodcast - The source
+ */
+_.mergePodcastInformation = function (oldPodcast, newPodcast) {
+  if (_.isEqual(oldPodcast.meta, newPodcast.meta) && oldPodcast.podcasts.length == newPodcast.podcasts.length) {
+    return;
+  }
+
+  var episodeDifference = newPodcast.podcasts.length - oldPodcast.podcasts.length
+  oldPodcast.meta = newPodcast.meta;
+
+  // Loop over backwards, that way the newest episodes are in the front
+  for (var i = episodeDifference; i > 0; i--) {
+    oldPodcast.podcasts.unshift(newPodcast.podcasts[i - 1]);
+  }
 };
