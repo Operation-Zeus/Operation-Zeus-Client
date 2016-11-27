@@ -1,8 +1,8 @@
 {
-  "name": "operation-zeus",
+  "name": "Operation-Zeus-Client",
   "version": "0.0.1",
   "main": "main.js",
-  "license": "GPLv3",
+  "license": "GPL3.0",
   "repository": {
     "type": "git"
   },
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "feedparser": "^1.1.4",
+    "lodash": "^4.17.2",
     "moment": "^2.14.1",
     "request": "^2.74.0"
   }
