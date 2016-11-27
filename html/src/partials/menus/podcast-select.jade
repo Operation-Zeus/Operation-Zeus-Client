@@ -4,6 +4,7 @@ ul.menu#context-menu
       md-button(ng-click="sharePodcast($event)" data-context-menu="true")
         md-icon(md-icon-library="material-icons") person_add
         span Share Podcast
+    md-menu-divider
     md-menu-item
       md-button(ng-click="openPodcastWebpage($event)" data-context-menu="true")
         md-icon(md-icon-library="material-icons") open_in_browser
@@ -13,6 +14,11 @@ ul.menu#context-menu
       md-button(ng-click="downloadAllPodcasts($event)" data-context-menu="true")
         md-icon(md-icon-library="material-icons") file_download
         span Download All
+    md-menu-divider
+    md-menu-item
+      md-button(ng-click="updatePodcast($event)" data-context-menu="true")
+        md-icon(md-font-library="material-icons") refresh
+        span Check for Updates
     md-menu-divider
     md-menu-item
       md-button(ng-click="deletePodcast($event)" data-context-menu="true")
