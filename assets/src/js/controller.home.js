@@ -33,9 +33,29 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog, $m
       return;
     }
 
-    Zeus.fetchPodcastRSS(podcastInfo.url, true, null, function (err, podcast) {
+    // Zeus.fetchPodcastRSS(podcastInfo.url, true, null, function (err, podcast) {
+    //   if (err || !podcast) {
+    //     $scope.podcastInfo.errorMessage = 'Error: ' + String(err);
+    //     $scope.podcastInfo.hasError = true;
+    //     $scope.loadingRSSFeed = false;
+    //     return;
+    //   }
+    //
+    //   $scope.podcastInfo.url = '';
+    //   $scope.loadingRSSFeed = false;
+    //
+    //   $timeout(function () {
+    //     $mdDialog.hide();
+    //     $scope.loadingPodcasts = false;
+    //
+    //     $scope.$apply();
+    //   }, 2000); // Give image time to download
+    // });
+
+
+    Zeus.addPodcast(podcastInfo.url, function (err, podcast) {
       if (err || !podcast) {
-        $scope.podcastInfo.errorMessage = 'Error: ' + String(err);
+        $scope.podcastInfo.errorMessage = `Error: ${String(err)}`;
         $scope.podcastInfo.hasError = true;
         $scope.loadingRSSFeed = false;
         return;
@@ -77,19 +97,42 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog, $m
   /**
    * Checks for new podcast / updates information if changes
    */
-  $scope.refreshAllPodcasts = function () {
+  $scope.updateAllPodcasts = function ($event) {
     for (var i = 0; i < $scope.podcasts.length; i++) {
       $rootScope.podcasts[i].loading = true;
 
-      Zeus.fetchPodcastRSS($scope.podcasts[i].rssUrl, false, $scope.podcasts[i].id, function (err, podcast, index) {
-        $rootScope.podcasts[index] = podcast;
-        $rootScope.podcasts[index].loading = false;
-        $scope.podcasts[index].loading = false;
+      // Zeus.fetchPodcastRSS($scope.podcasts[i].rssUrl, false, $scope.podcasts[i].id, function (err, podcast, index) {
+      //   $rootScope.podcasts[index] = podcast;
+      //   $rootScope.podcasts[index].loading = false;
+      //   $scope.podcasts[index].loading = false;
+      //
+      //   console.log($rootScope.podcasts);
+      //   $scope.$apply();
+      // });
+
+      Zeus.updatePodcast($scope.podcasts[i], function (err, podcast) {
+        $rootScope.podcasts[podcast.id] = podcast;
+        $rootScope.podcasts[podcast.id].loading = false;
+        // $scope.podcasts[index].loading = false;
 
         console.log($rootScope.podcasts);
         $scope.$apply();
       });
     }
+  };
+
+  $scope.updatePodcast = function ($event) {
+    var podcastId = getSelectedPodcastId();
+
+    console.log($scope.podcasts[podcastId]);
+    Zeus.updatePodcast($scope.podcasts[podcastId], function (err, podcast) {
+      $rootScope.podcasts[podcast.id] = podcast;
+      $rootScope.podcasts[podcast.id].loading = false;
+      // $scope.podcasts[index].loading = false;
+
+      console.log($scope.podcasts[podcastId]);
+      $scope.$apply();
+    });
   };
 
   /**
