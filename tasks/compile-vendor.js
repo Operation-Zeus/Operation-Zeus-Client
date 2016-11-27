@@ -1,6 +1,7 @@
 "use strict";
 
 const gulp = require('gulp');
+const runSequence = require('run-sequence');
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 
@@ -16,5 +17,6 @@ gulp.task('compress-vendor', function () {
   .pipe(gulp.dest('assets/build/js/'));
 });
 
-
-gulp.task('vendor', ['concat-vendor', 'compress-vendor']);
+gulp.task('vendor', function (callback) {
+  runSequence('concat-vendor', 'compress-vendor', callback);
+});
