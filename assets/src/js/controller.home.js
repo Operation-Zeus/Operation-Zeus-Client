@@ -74,6 +74,9 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog, $m
     $scope.podcastInfo.url = podcast.feedUrl;
   };
 
+  /**
+   * Checks for new podcast / updates information if changes
+   */
   $scope.refreshAllPodcasts = function () {
     for (var i = 0; i < $scope.podcasts.length; i++) {
       $rootScope.podcasts[i].loading = true;
@@ -89,7 +92,11 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog, $m
     }
   };
 
-  // On right-click, select our podcast
+  /**
+   * On right-click, select our podcast
+   * @param {PODCAST} podcast - the podcast object
+   * @param {EVENT} $event - the event object (from the DOM)
+   */
   $scope.selectPodcast = function (podcast, $event) {
     // Unselect all other podcasts
     $scope.handlePodcastUnselect($event);
@@ -97,8 +104,11 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog, $m
     $scope.podcasts[podcast.id].selected = true;
   };
 
-  // On every other click, remove that selection
-  $scope.handlePodcastUnselect = function($event) {
+  /**
+   * This allows for a "toggle" on the podcast
+   * @param {EVENT} $event - the event object
+   */
+  $scope.handlePodcastUnselect = function ($event) {
     // Keep the selection if using the context menu
     if (angular.element($event.srcElement).parent().attr('data-context-menu')) {
       return;
@@ -112,7 +122,7 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog, $m
 
   /**
    * Shows options for a user to share a podcast on Facebook / Twitter / Tumblr
-   * @param {EVENT} e - $event
+   * @param {EVENT} $event
    */
   $scope.sharePodcast = function ($event) {
     var podcastId = getSelectedPodcastId();
@@ -127,7 +137,7 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog, $m
 
   /**
    * Opens up the podcast homepage in their browser
-   * @param {EVENT} e - $event
+   * @param {EVENT} $event
    */
   $scope.openPodcastWebpage = function ($event) {
     var podcastId = getSelectedPodcastId();
@@ -137,7 +147,7 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog, $m
 
   /**
    * Downloads all the un-heard podcasts
-   * @param {EVENT} e - $event
+   * @param {EVENT} $event
    */
   $scope.downloadAllPodcasts = function ($event) {
     var podcastId = getSelectedPodcastId();
@@ -146,7 +156,7 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog, $m
 
   /**
    * Removes the podcast from the list, after a confirmation
-   * @param {EVENT} e - $event
+   * @param {EVENT} $event
    */
   $scope.deletePodcast = function ($event) {
     var podcastId = getSelectedPodcastId();
@@ -160,11 +170,7 @@ function HomePageCtrl($scope, $rootScope, $timeout, $document, $q, $mdDialog, $m
 
     $mdDialog.show(confirm).then(function () {
       var title = $scope.podcasts[podcastId].meta.title;
-      console.log('You chose to delete!');
-
       Zeus.removePodcast(podcastId);
-
-      console.log('Showing toast!');
 
       $mdToast.show({
         hideDelay: 3000,
