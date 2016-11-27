@@ -26,10 +26,10 @@ function MainCtrl($scope, $rootScope, $window, $state, $document, $interval, $ti
    * My home-grown solution to opening external links in the browser
    * Semi-based off of http://stackoverflow.com/a/34503161/4288525
    */
-  $document.on('click', function (e) {
-    if (e.srcElement.href && e.srcElement.href.includes('http')) {
-      shell.openExternal(e.srcElement.href);
-      e.preventDefault();
+  $document.on('click', function ($event) {
+    if ($event.srcElement.href && $event.srcElement.href.includes('http')) {
+      shell.openExternal($event.srcElement.href);
+      $event.preventDefault();
     }
   });
 
