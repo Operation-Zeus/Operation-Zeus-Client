@@ -99,7 +99,7 @@ class Episode {
   deleteEpisode() {
     let episode = this;
 
-    fs.unlink(`userdata/podcasts/${episode.md5}.mp3`, function (error) {
+    fs.unlink(`userdata/podcasts/${episode.hash}.mp3`, function (error) {
       if (error) {
         callback(false);
       }
