@@ -9,5 +9,8 @@ Currently in a pre-alpha active development state - but feel free to download & 
 2. Download required includes (`npm install`)
 3. Compile / Run (`npm start`)
 
+## Documentation
+Any and all documentation can be found on the [wiki](https://github.com/Operation-Zeus/Operation-Zeus-Client/wiki)
+
 ## License
 Released under the [GPLv3 license](https://opensource.org/licenses/GPL-3.0).
