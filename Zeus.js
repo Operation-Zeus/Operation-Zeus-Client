@@ -14,8 +14,8 @@ Zeus.settings = {};
 
 /**
  * Queries iTunes for podcasts
- * @param {STRING} input
- * @param {FUNCTION} callback
+ * @param {String} input
+ * @param {Function} callback
  */
 Zeus.searchPodcastOnITunes = function (input, callback) {
   var url = `https://itunes.apple.com/search?term=${encodeURIComponent(input)}&country=US&media=podcast`;
@@ -33,10 +33,10 @@ Zeus.searchPodcastOnITunes = function (input, callback) {
 
 /**
  * Fetches the XML from an RSS feed
- * @param {STRING} url
- * @param {BOOLEAN} newPodcast
- * @param {INT} id
- * @param {FUNCTION} callback
+ * @param {String} url
+ * @param {boolean} newPodcast
+ * @param {int} id
+ * @param {Function} callback
  */
 Zeus.fetchPodcastRSS = function(url, callback) {
   var req = request(url);
@@ -91,7 +91,7 @@ Zeus.fetchPodcastRSS = function(url, callback) {
 
 /**
  * Reads our podcasts from the JSON file
- * @param {FUNCTION} callback
+ * @param {Function} callback
  */
 Zeus.loadSavedPodcasts = function(callback) {
   var data = [];
@@ -115,7 +115,7 @@ Zeus.loadSavedPodcasts = function(callback) {
 
 /**
  * Reads our userdata settings
- * @param {FUNCTION} callback
+ * @param {Function} callback
  */
 Zeus.loadSettings = function(callback) {
   var data = {};
@@ -129,8 +129,8 @@ Zeus.loadSettings = function(callback) {
 
 /**
  * Saves settings to a file
- * @param {OBJECT} data
- * @param {FUNCTION} callback
+ * @param {Object} data
+ * @param {Function} callback
  */
 Zeus.saveSettings = function(data, callback) {
   fs.writeFile(`userdata/settings.json`, JSON.stringify(data), (err) => {
@@ -145,9 +145,9 @@ Zeus.saveSettings = function(data, callback) {
 
 /**
  * Saves a podcast to our array / file
- * @param {PODCAST} podcast
- * @param {BOOLEAN} newPodcast
- * @param {INT} id
+ * @param {Podcast} podcast
+ * @param {boolean} newPodcast
+ * @param {int} id
  */
 Zeus.savePodcast = function(podcast) {
   Zeus.beautifyEpisodes(podcast);
@@ -166,8 +166,8 @@ Zeus.savePodcast = function(podcast) {
 
 /**
  * Adds a podcast to our selection
- * @param {STRING} url - The RSS feed URL
- * @param {FUNCTION} callback
+ * @param {String} url - The RSS feed URL
+ * @param {Function} callback
  */
 Zeus.addPodcast = function (url, callback) {
   Zeus.fetchPodcastRSS(url, (error, podcast) => {
@@ -184,7 +184,7 @@ Zeus.addPodcast = function (url, callback) {
 
 /**
  * Fetches podcast from RSS url, updates changes
- * @param {PODCAST} podcast - The podcast we are checking
+ * @param {Podcast} podcast - The podcast we are checking
  */
 Zeus.updatePodcast = function (podcast, callback) {
   podcast.loading = true;
@@ -205,7 +205,7 @@ Zeus.updatePodcast = function (podcast, callback) {
 
 /**
  * Removes a podcast from our array / file
- * @param {INT} podcastId
+ * @param {int} podcastId
  */
 Zeus.removePodcast = function(podcastId) {
   Zeus.podcasts.splice(podcastId, 1);
@@ -233,7 +233,7 @@ Zeus.updatePodcastFile = function () {
 
 /**
  * Re-downloads the images
- * @param {PODCAST} podcast
+ * @param {Podcast} podcast
  */
 Zeus.updateCachedImage = function (podcast) {
   var url = podcast.meta['itunes:image']['@'].href;
@@ -263,7 +263,7 @@ Zeus.updateCachedImage = function (podcast) {
 
 /**
  * Updates a current downloaded
- * @param {PODCAST} podcast
+ * @param {Podcast} podcast
  */
 Zeus.updateSavedPodcast = function (podcast) {
   Zeus.podcasts[podcast.id] = podcast;
@@ -273,7 +273,7 @@ Zeus.updateSavedPodcast = function (podcast) {
 
 /**
  * Downloads the .mp3 from the server
- * @param {PODCAST} podcast
+ * @param {Podcast} podcast
  */
 Zeus.downloadEpisode = function (podcast, callback) {
   var url = podcast['rss:enclosure']['@'].url;
@@ -329,7 +329,7 @@ Zeus.downloadEpisode = function (podcast, callback) {
 
 /**
  * Deletes the .mp3 from the client
- * @param {PODCAST} podcast
+ * @param {Podcast} podcast
  */
 Zeus.deleteEpisode = function (podcast, callback) {
   fs.unlinkSync(`userdata/podcasts/${api.md5(podcast.guid)}.mp3`);
@@ -346,7 +346,7 @@ Zeus.deleteEpisode = function (podcast, callback) {
 
 /**
  * Goes through each podcast episode, and makes the time readable, assigns id to index, etc.
- * @param {PODCAST} podcast
+ * @param {Podcast} podcast
  */
 Zeus.beautifyEpisodes = function (podcast) {
   for (var i = 0; i < podcast.podcasts.length; i++) {
@@ -368,8 +368,8 @@ Zeus.beautifyEpisodes = function (podcast) {
 /**
  * Our own "version" of a deep extend. Cause we can :D
  * @description This primarily only updates the episodes -- adding new while keeping the old.
- * @param {PODCAST} oldPodcast - The target
- * @param {PODCAST} newPodcast - The source
+ * @param {Podcast} oldPodcast - The target
+ * @param {Podcast} newPodcast - The source
  */
 _.mergePodcastInformation = function (oldPodcast, newPodcast) {
   if (_.isEqual(oldPodcast.meta, newPodcast.meta) && oldPodcast.podcasts.length == newPodcast.podcasts.length) {
