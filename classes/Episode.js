@@ -21,7 +21,15 @@ class Episode {
    * @return {void}
    */
   deleteEpisode() {
+    let episode = this;
 
+    fs.unlink(`userdata/podcasts/${episode.md5}.mp3`, function (error) {
+      if (error) {
+        callback(false);
+      }
+
+      callback(true);
+    });
   }
 }
 
