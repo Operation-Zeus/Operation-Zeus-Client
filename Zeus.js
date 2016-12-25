@@ -194,7 +194,7 @@ Zeus.addPodcast = function (url, callback) {
 Zeus.updatePodcast = function (podcast, callback) {
   podcast.loading = true;
 
-  Zeus.fetchPodcastRSS(podcast.rssUrl, (error, newPodcastInfo) => {
+  Zeus.fetchPodcastRSS(podcast.rssURL, (error, newPodcastInfo) => {
     if (error) {
       callback(error, null);
       return;
