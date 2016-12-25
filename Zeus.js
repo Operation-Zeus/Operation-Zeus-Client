@@ -216,7 +216,7 @@ Zeus.removePodcast = function(podcastId) {
   Zeus.podcasts.splice(podcastId, 1);
 
   // Fix our ids
-  for (var i = 0; i < Zeus.podcasts.length; i++) {
+  for (let i = 0; i < Zeus.podcasts.length; i++) {
     Zeus.podcasts[i].id = i;
   }
 
@@ -237,36 +237,6 @@ Zeus.updatePodcastFile = function () {
 };
 
 /**
- * Re-downloads the images
- * @param {Podcast} podcast
- */
-Zeus.updateCachedImage = function (podcast) {
-  var url = podcast.meta['itunes:image']['@'].href;
-  var file = fs.createWriteStream(`userdata/cached/${podcast.id}`);
-  var req = request(url);
-
-  // Sometimes we'll get a 400 error without a user-agent
-  req.setHeader('user-agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36');
-  req.setHeader('accept', 'text/html,application/xhtml+xml');
-
-  req.on('error', (error) => {
-    api.log('error', `Failed to download image for podcast ${podcast.meta.title}, ${error}`);
-  });
-
-  req.on('response', function (res) {
-    var stream = this;
-
-    if (res.statusCode != 200) {
-      api.log('error', `Bad status code ${res.statusCode}`);
-      return;
-    }
-
-    api.log('file', `Piping download for image of podcast ${podcast.meta.title}`);
-    stream.pipe(file);
-  });
-};
-
-/**
  * Updates a current downloaded
  * @param {Podcast} podcast
  */
@@ -274,100 +244,6 @@ Zeus.updateSavedPodcast = function (podcast) {
   Zeus.podcasts[podcast.id] = podcast;
 
   Zeus.updatePodcastFile();
-};
-
-/**
- * Downloads the .mp3 from the server
- * @param {Podcast} podcast
- */
-Zeus.downloadEpisode = function (podcast, callback) {
-  var url = podcast['rss:enclosure']['@'].url;
-  var file = fs.createWriteStream(`userdata/podcasts/${podcast.hash}.mp3`);
-  var req = request(url);
-
-  // Sometimes we'll get a 400 error without a user-agent
-  req.setHeader('user-agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36');
-  req.setHeader('accept', 'text/html,application/xhtml+xml');
-
-  req.on('error', (error) => {
-    console.log('Failed to download!');
-    callback(error, null);
-  });
-
-  req.on('response', function (res) {
-    var stream = this;
-
-    if (res.statusCode != 200) {
-      return callback(`Bad status code ${res.statusCode}`, null);
-    }
-
-    console.log('Piping download!');
-    stream.pipe(file);
-
-    var notSame = true;
-    var sizeOfFile = parseInt(res.headers['content-length']);
-
-    // Track the size of the file, to upload our download bar.
-    var fileWatcher = fs.watchFile(`userdata/podcasts/${podcast.hash}.mp3`, {  persistent: true, interval: 500 }, (curr, prev) => {
-      if (curr != prev) {
-        notSame = true;
-
-        callback(null, true, curr.size / sizeOfFile);
-        return;
-      }
-    });
-
-    // The file listener stops calling once prev = curr (grumble grumble), so we have to keep track of when that happens with an interval
-    var checkInterval = setInterval(function () {
-      if (!notSame) {
-        api.log('file', `Unwatching file...`);
-        fs.unwatchFile(`userdata/podcasts/${podcast.hash}.mp3`);
-
-        clearInterval(checkInterval);
-        callback(null, true, 1);
-      }
-
-      notSame = false;
-    }, 2500);
-  });
-};
-
-/**
- * Deletes the .mp3 from the client
- * @param {Podcast} podcast
- */
-Zeus.deleteEpisode = function (podcast, callback) {
-  fs.unlinkSync(`userdata/podcasts/${api.md5(podcast.guid)}.mp3`);
-
-  callback(true);
-  // fs.unlink(`userdata/podcasts/${api.md5(podcast.guid)}.mp3`, function (err) {
-  //   if (err) {
-  //     throw error;
-  //   }
-  //
-  //   callback(success);
-  // });
-};
-
-/**
- * Goes through each podcast episode, and makes the time readable, assigns id to index, etc.
- * @param {Podcast} podcast
- */
-Zeus.beautifyEpisodes = function (podcast) {
-  for (var i = 0; i < podcast.podcasts.length; i++) {
-    podcast.podcasts[i].pubDateParsed = moment(podcast.podcasts[i].pubDate).format('MMMM DD, YYYY');
-    podcast.podcasts[i].id = i;
-
-    if (podcast.podcasts[i]['itunes:duration']['#'].includes(':')) {
-      podcast.podcasts[i].podcastLengthParsed = podcast.podcasts[i]['itunes:duration']['#'];
-      continue;
-    }
-
-    podcast.podcasts[i].podcastLength = api.formatSecondsToHoursMinutesSeconds(podcast.podcasts[i]['itunes:duration']['#']);
-    podcast.podcasts[i].podcastLengthParsed = api.formatSecondsToWords(podcast.podcasts[i]['itunes:duration']['#']);
-    podcast.podcasts[i].currentTime = 0;
-    podcast.podcasts[i].watched = false;
-  }
 };
 
 /**
