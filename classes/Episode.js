@@ -21,6 +21,7 @@ class Episode {
     this.source = data.source;
     this.guid = data.guid;
     this.title = data.title;
+    this.rssURL = data.rssURL;
 
     this.downloading = false;
     this.isDownloaded = false;
@@ -60,7 +61,7 @@ class Episode {
   downloadEpisode(callback) {
     let episode = this;
 
-    let url = episode['rss:enclosure']['@'].url;
+    let url = episode.rssURL
     let file = fs.createWriteStream(`userdata/podcasts/${episode.hash}.mp3`);
     let req = request(url);
 

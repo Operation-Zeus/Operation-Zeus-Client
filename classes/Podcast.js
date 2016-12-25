@@ -38,7 +38,8 @@ class Podcast {
       source: data.link,
       guid: data.guid,
       length: data['itunes:duration']['#'],
-      tite: data.title
+      tite: data.title,
+      rssURL: data['rss:enclosure']['@'].url
     });
 
     this.episodes.push(episode);
