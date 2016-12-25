@@ -38,8 +38,6 @@ Zeus.searchPodcastOnITunes = function (input, callback) {
 /**
  * Fetches the XML from an RSS feed
  * @param {String} url
- * @param {boolean} newPodcast
- * @param {int} id
  * @param {Function} callback
  */
 Zeus.fetchPodcastRSS = function(url, callback) {
@@ -96,37 +94,43 @@ Zeus.fetchPodcastRSS = function(url, callback) {
  * @param {Function} callback
  */
 Zeus.loadSavedPodcasts = function(callback) {
-  var data = [];
-  if (fs.existsSync('userdata/podcasts.json')) {
-    data = JSON.parse(fs.readFileSync('userdata/podcasts.json'));
-  }
+  fs.readFile(`userdata/podcasts.json`, 'utf8', (err, data) => {
+    if (err) {
+      api.error(`Failed to read podcasts file - ${err}`);
 
-  for (var podcast = 0; podcast < data.length; podcast++) {
-    data[podcast].loading = false;
-
-    for (var episode = 0; episode < data[podcast].podcasts.length; episode++) {
-      data[podcast].podcasts[episode].hash = api.md5(data[podcast].podcasts[episode].guid);
-      data[podcast].podcasts[episode].id = episode;
-      data[podcast].podcasts[episode].isDownloaded = fs.existsSync(`userdata/podcasts/${data[podcast].podcasts[episode].hash}.mp3`);
+      Zeus.podcasts = [];
+      callback([]);
+      return;
     }
-  }
 
-  Zeus.podcasts = data;
-  return callback(data);
+    let podcasts = JSON.parse(data);
+    for (let i = 0; i < podcasts.length; i++) {
+      podcasts[i].loading = false;
+    }
+
+    api.log('file', 'Read podcasts file');
+
+    Zeus.podcasts = podcasts;
+    callback(podcasts);
+  });
 };
 
 /**
  * Reads our userdata settings
  * @param {Function} callback
  */
-Zeus.loadSettings = function(callback) {
-  var data = {};
-  if (fs.existsSync('userdata/settings.json')) {
-    api.log('file', 'Read settings file');
-    data = JSON.parse(fs.readFileSync('userdata/settings.json'));
-  }
+Zeus.loadSettings = function (callback) {
+  fs.readFile(`userdata/settings.json`, 'utf8', (err, data) => {
+    if (err) {
+      api.error(`Failed to read settings file - ${err}`);
+      callback({});
+      return;
+    }
 
-  callback(data);
+    let settings = JSON.parse(data);
+    api.log('file', 'Read settings file');
+    callback(settings);
+  });
 };
 
 /**
@@ -134,7 +138,7 @@ Zeus.loadSettings = function(callback) {
  * @param {Object} data
  * @param {Function} callback
  */
-Zeus.saveSettings = function(data, callback) {
+Zeus.saveSettings = function (data, callback) {
   fs.writeFile(`userdata/settings.json`, JSON.stringify(data), (err) => {
     if (err) {
       throw err;
