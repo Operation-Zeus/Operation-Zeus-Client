@@ -2,11 +2,30 @@
 
 const fs = require('fs');
 const moment = require('moment');
-const api = Electron.remote.require('../api.js');
+
+const api = require('../api.js');
 
 class Episode {
-  constructor() {
+  /**
+   * Initializes the Episode
+   * @param  {Object} data An object containing information from the stream reader
+   * @return {void}
+   */
+  constructor(data) {
+    this.author = data.author;
+    this.id = data.id;
+    this.description = data.description;
+    this.summary = data.summary;
+    this.imageURL = data.imageURL;
+    this.date = this.pubDate = data.date;
+    this.source = data.source;
+    this.guid = data.guid;
 
+    this.downloading = false;
+    this.isDownloaded = false;
+    this.hash = api.md5(this.guid);
+
+    this.beautify(this.id);
   }
 
   /**
