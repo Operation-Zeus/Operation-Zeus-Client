@@ -61,7 +61,7 @@ class Episode {
     let episode = this;
 
     let url = episode['rss:enclosure']['@'].url;
-    let file = fs.createWriteStream(`userdata/podcasts/${podcast.hash}.mp3`);
+    let file = fs.createWriteStream(`userdata/podcasts/${episode.hash}.mp3`);
     let req = request(url);
 
     // Sometimes we'll get a 400 error without a user-agent, so let's fake some headers
