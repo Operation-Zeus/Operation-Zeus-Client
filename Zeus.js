@@ -7,9 +7,11 @@ const moment = require('moment');
 const Electron = require('electron');
 const _ = require('lodash');
 
-var Main = Electron.remote.require('./main.js');
-var api = Electron.remote.require('./api.js');
-var Zeus = {};
+let Main = Electron.remote.require('./main.js');
+let api = Electron.remote.require('./api.js');
+let Podcast = Electron.remote.require('./classes/Podcast.js');
+
+let Zeus = {};
 
 Zeus.podcasts = [];
 Zeus.settings = {};
@@ -20,7 +22,7 @@ Zeus.settings = {};
  * @param {Function} callback
  */
 Zeus.searchPodcastOnITunes = function (input, callback) {
-  var url = `https://itunes.apple.com/search?term=${encodeURIComponent(input)}&country=US&media=podcast`;
+  let url = `https://itunes.apple.com/search?term=${encodeURIComponent(input)}&country=US&media=podcast`;
 
   request(url, (error, response, body) => {
     if (error || response.statusCode != 200) {
@@ -41,11 +43,9 @@ Zeus.searchPodcastOnITunes = function (input, callback) {
  * @param {Function} callback
  */
 Zeus.fetchPodcastRSS = function(url, callback) {
-  var req = request(url);
-  var feedparser = new FeedParser();
-  var podcast = {};
-  podcast.podcasts = [];
-  podcast.rssUrl = url;
+  let req = request(url);
+  let feedparser = new FeedParser();
+  let podcast = new Podcast(url);
 
   // Sometimes we'll get a 400 error without a user-agent
   req.setHeader('user-agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36');
@@ -56,7 +56,7 @@ Zeus.fetchPodcastRSS = function(url, callback) {
   });
 
   req.on('response', function (res) {
-    var stream = this;
+    let stream = this;
 
     if (res.statusCode != 200) {
       return callback(`Bad status code ${res.statusCode}`, null);
@@ -70,15 +70,15 @@ Zeus.fetchPodcastRSS = function(url, callback) {
   });
 
   feedparser.on('readable', function () {
-    var stream = this;
-    var meta = this.meta;
-    var item;
+    let stream = this;
+    let meta = this.meta;
+    let item = {};
 
     podcast.meta = meta;
 
     // Keep reading while there is more to read
     while (item = stream.read()) {
-      podcast.podcasts.push(item);
+      podcast.addEpisode(item);
     }
   });
 
