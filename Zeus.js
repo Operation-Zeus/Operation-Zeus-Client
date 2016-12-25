@@ -147,20 +147,23 @@ Zeus.saveSettings = function(data, callback) {
 
 /**
  * Saves a podcast to our array / file
- * @param {Podcast} podcast
- * @param {boolean} newPodcast
- * @param {int} id
+ * @param {Podcast} podcast The podcast to be added
+ * @return {void}
  */
-Zeus.savePodcast = function(podcast) {
-  Zeus.beautifyEpisodes(podcast);
-
+Zeus.savePodcast = function (podcast) {
   Zeus.podcasts.push(podcast);
   podcast.id = Zeus.podcasts.indexOf(podcast);
   podcast.imageURL = podcast.meta['itunes:image']['@'].href;
 
   if (Zeus.settings.cacheImages) {
     podcast.imageURL = `../../userdata/cached/${podcast.id}`;
-    Zeus.updateCachedImage(podcast);
+    podcast.updateCachedImage();
+
+    for (let i = 0; i < podcast.episodes.length; i++) {
+      podcast.episodes[i].imageURL = `../../userdata/cached/${podcast.episodes[i].hash}`;
+    }
+
+    podcast.updateCachedEpisodeImages();
   }
 
   Zeus.updatePodcastFile();
