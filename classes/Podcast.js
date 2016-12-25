@@ -83,6 +83,18 @@ class Podcast {
       stream.pipe(file);
     });
   }
+
+  /**
+   * Loops through each episode, runs the update call
+   * @return {void}
+   */
+  updateCachedEpisodeImages() {
+    let podcast = this;
+
+    for (let i = 0; i < podcast.episodes.length; i++) {
+      podcast.episodes[i].updateCachedImage();
+    }
+  }
 }
 
 module.exports = Podcast;
