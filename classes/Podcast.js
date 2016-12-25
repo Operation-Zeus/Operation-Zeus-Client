@@ -1,6 +1,7 @@
 'use strict';
 
 const request = require('request');
+const fs = require('fs');
 
 const api = require('../api.js');
 const Episode = require('./Episode.js');
@@ -15,8 +16,10 @@ class Podcast {
     this.meta = {};
     this.episodes = [];
     this.rssURL = url;
-    this.loading = false;
+    this.loading = true;
     this.imageURL = '';
+
+    this.id = null;
   }
 
   /**
@@ -41,10 +44,6 @@ class Podcast {
     this.episodes.push(episode);
   }
 
-  savePodcast() {
-
-  }
-
   updatePodcast() {
 
   }
@@ -53,8 +52,36 @@ class Podcast {
 
   }
 
+  /**
+   * Fetches the podcast image, saves it to a file
+   * @return {void}
+   */
   updateCachedImage() {
+    let podcast = this;
 
+    let url = podcast.imageURL;
+    let file = fs.createWriteStream(`userdata/cached/${podcast.id}`);
+    let req = request(url);
+
+    // Sometimes we'll get a 400 error without a user-agent
+    req.setHeader('user-agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36');
+    req.setHeader('accept', 'text/html,application/xhtml+xml');
+
+    req.on('error', (error) => {
+      api.log('error', `Failed to download image for podcast ${podcast.meta.title}, ${error}`);
+    });
+
+    req.on('response', function (res) {
+      let stream = this;
+
+      if (res.statusCode != 200) {
+        api.log('error', `Bad status code ${res.statusCode}`);
+        return;
+      }
+
+      api.log('file', `Piping download for image of podcast ${podcast.meta.title}`);
+      stream.pipe(file);
+    });
   }
 }
 
