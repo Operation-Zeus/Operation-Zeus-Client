@@ -20,6 +20,7 @@ class Episode {
     this.date = this.pubDate = data.date;
     this.source = data.source;
     this.guid = data.guid;
+    this.title = data.title;
 
     this.downloading = false;
     this.isDownloaded = false;
@@ -124,6 +125,38 @@ class Episode {
       }
 
       callback(true);
+    });
+  }
+
+  /**
+   * Fetches the episode image, saves it to a file
+   * @return {void}
+   */
+  updateCachedImage() {
+    let episode = this;
+
+    let url = episode.imageURL;
+    let file = fs.createWriteStream(`userdata/cached/${episode.hash}`);
+    let req = request(url);
+
+    // Sometimes we'll get a 400 error without a user-agent
+    req.setHeader('user-agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36');
+    req.setHeader('accept', 'text/html,application/xhtml+xml');
+
+    req.on('error', (error) => {
+      api.log('error', `Failed to download image for episode ${episode.title}, ${error}`);
+    });
+
+    req.on('response', function (res) {
+      let stream = this;
+
+      if (res.statusCode != 200) {
+        api.log('error', `Bad status code ${res.statusCode}`);
+        return;
+      }
+
+      api.log('file', `Piping download for image of episode ${episode.title}`);
+      stream.pipe(file);
     });
   }
 }
